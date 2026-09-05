@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta: Qualidade de Pavimento</title>
+    <style>
+        /* Base e Reset */
+        body, html { 
+            margin: 0; padding: 0; height: 100%; 
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; 
+            background-color: #f4f7f6; color: #2c3e50; overflow: hidden; 
+        }
+        
+        /* Slides - Espaçamento ajustado para não vazar na tela */
+        .slide { 
+            display: none; height: 100vh; width: 100vw; 
+            padding: 40px 100px 80px 100px; box-sizing: border-box; 
+            flex-direction: column; justify-content: flex-start; 
+            position: absolute; top: 0; left: 0; background: white; 
+        }
+        .slide.active { display: flex; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tipografia */
+        h1 { color: #2c3e50; font-size: 2.8em; border-bottom: 4px solid #3498db; padding-bottom: 10px; margin: 0 0 10px 0; }
+        h2 { color: #7f8c8d; font-size: 1.5em; margin: 0 0 20px 0; font-weight: 400; }
+        ul { margin-top: 10px; padding-left: 30px; }
+        li { font-size: 1.5em; line-height: 1.5; margin-bottom: 15px; color: #34495e; }
+        
+        /* Destaques (Cards) */
+        .highlight { 
+            background: linear-gradient(135deg, #e0f7fa 0%, #eaf4fc 100%);
+            border-left: 8px solid #0097a7; 
+            padding: 20px; margin-top: auto;
+            border-radius: 8px; font-size: 1.5em; font-weight: 600; color: #006064;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* Tabelas - Totalmente corrigidas para não quebrar a formatação */
+        .table-container { width: 100%; margin-top: 10px; overflow: hidden; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+        table { border-collapse: collapse; width: 100%; table-layout: fixed; background: white; }
+        th, td { padding: 12px 18px; text-align: left; font-size: 1.15em; line-height: 1.4; border-bottom: 1px solid #ecf0f1; vertical-align: middle; }
+        th { background-color: #2c3e50; color: white; font-weight: 600; text-transform: uppercase; font-size: 1.05em; letter-spacing: 0.5px; }
+        
+        /* Largura exata das colunas para evitar texto espremido */
+        th:nth-child(1), td:nth-child(1) { width: 23%; font-weight: 600; color: #2980b9; }
+        th:nth-child(2), td:nth-child(2) { width: 37%; color: #34495e; }
+        th:nth-child(3), td:nth-child(3) { width: 40%; color: #27ae60; font-weight: 500; }
+        
+        tr:nth-child(even) { background-color: #f9fbfc; }
+        tr:last-child td { border-bottom: none; }
+
+        /* Controles */
+        .controls { position: fixed; bottom: 25px; left: 100px; z-index: 1000; display: flex; gap: 15px; }
+        button { 
+            font-size: 1.1em; padding: 10px 25px; cursor: pointer; border: none; 
+            background: #3498db; color: white; border-radius: 6px; font-weight: 600; 
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3); transition: background 0.2s;
+        }
+        button:hover { background: #2980b9; }
+        .footer { position: fixed; bottom: 30px; right: 100px; font-size: 1.2em; color: #95a5a6; z-index: 1000; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <!-- SLIDE 1 -->
+    <div class="slide active">
+        <h1>Proposta de Trabalho</h1>
+        <h2>Arthur Amaral Públio de Souza &bull; Domínio: Qualidade de Pavimento</h2>
+        
+        <h3 style="color: #2980b9; font-size: 1.8em; margin-top: 30px;">1. O Problema</h3>
+        <ul>
+            <li><strong>A Dor:</strong> Mapear buracos com inspeção visual é lento; perfilômetros são caríssimos.</li>
+            <li><strong>O Paliativo:</strong> Enviar telemetria bruta para a nuvem, desperdiçando dados e banda.</li>
+            <li><strong>A Solução:</strong> Processamento 100% local (Nó de borda) embarcado no Galaxy Tab S9.</li>
+        </ul>
+
+        <div class="highlight">
+            Alerta local e imediato: O dispositivo roda em veículos comuns (crowdsensing) e detecta anomalias sem depender de internet.
+        </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+        <h1>Observação e Física</h1>
+        <h2>2. Definição do Escopo</h2>
+        
+        <ul>
+            <li><strong>Grandeza Medida:</strong> Vibração vertical (Z) e Velocidade horizontal.</li>
+            <li><strong>Hardware:</strong> Acelerômetro e GNSS do próprio tablet (incerteza via Android).</li>
+            <li><strong>Tempo Real:</strong> Leitura a cada 50ms (20Hz) com prazo de análise de 40ms.</li>
+        </ul>
+
+        <div class="highlight">
+            A Reconciliação Matemática:<br>
+            O impacto na suspensão é proporcional à velocidade. <br>
+            Vibração alta em 10 km/h = Ruído manual (falso positivo).<br>
+            Vibração alta em 60 km/h = Erro Grosseiro (Buraco real).
+        </div>
+    </div>
+
+    <!-- SLIDE 3 (Tabela 1 a 5 - Formatada) -->
+    <div class="slide">
+        <h1>Mapeamento (1 a 5)</h1>
+        <h2>3. Capacidades Estruturais e Tempo Real</h2>
+        
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Capacidade</th>
+                    <th>No Nosso Domínio</th>
+                    <th>Teste de Aceitação</th>
+                </tr>
+                <tr>
+                    <td>1. Contratos</td>
+                    <td>Tipos estritos para GPS e Vibração.</td>
+                    <td>Construtor bloqueia valores irreais imediatamente.</td>
+                </tr>
+                <tr>
+                    <td>2. Reconciliação</td>
+                    <td>Amarrar força Z com velocidade.</td>
+                    <td>Resíduo estoura no buraco e alerta a anomalia.</td>
+                </tr>
+                <tr>
+                    <td>3. Concorrência</td>
+                    <td>Buffer circular separando leitura da análise.</td>
+                    <td>10 rodadas provando cópias seguras em memória.</td>
+                </tr>
+                <tr>
+                    <td>4. Tempo Real</td>
+                    <td>Manter amostragem cravada em 50ms.</td>
+                    <td>Log de 30 min contínuos com tela bloqueada.</td>
+                </tr>
+                <tr>
+                    <td>5. Ensaio Reprodutível</td>
+                    <td>Reproduzir trajeto real como evento ao vivo.</td>
+                    <td>Injetar pico falso no log e validar a detecção.</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- SLIDE 4 (Tabela 6 a 10 - Formatada) -->
+    <div class="slide">
+        <h1>Mapeamento (6 a 10)</h1>
+        <h2>3. Inteligência e Escalonabilidade</h2>
+        
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Capacidade</th>
+                    <th>No Nosso Domínio</th>
+                    <th>Teste de Aceitação</th>
+                </tr>
+                <tr>
+                    <td>6. Instrumentação</td>
+                    <td>Respeitar o prazo de 40ms por leitura.</td>
+                    <td>Medição de tempo ($C_i$) gerando tabela de folga.</td>
+                </tr>
+                <tr>
+                    <td>7. Aprendizado</td>
+                    <td>Aprender a assinatura do "asfalto bom".</td>
+                    <td>Previsão correta na metade final do log.</td>
+                </tr>
+                <tr>
+                    <td>8. Substituição</td>
+                    <td>Degradação caso o modelo de IA falhe.</td>
+                    <td>Desligar IA; sistema opera por limiar fixo.</td>
+                </tr>
+                <tr>
+                    <td>9. Multi-nó e Cripto</td>
+                    <td>Veículos confirmando o mesmo buraco.</td>
+                    <td>Fundir alerta na rede; proteger chave no Keystore.</td>
+                </tr>
+                <tr>
+                    <td>10. Validação Cega</td>
+                    <td>Justificar IA vs. Regras simples.</td>
+                    <td>Métricas comparativas extraídas dos 2 logs ocultos.</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+        <h1>Dados e Contingência</h1>
+        <h2>4. Coleta e 5. Riscos</h2>
+        
+        <ul>
+            <li><strong>Coleta:</strong> 5 trajetos de 30 min com o tablet alocado no veículo.</li>
+            <li><strong>Congelamento:</strong> 3 logs para treino imediato; 2 arquivos retidos hoje para o ensaio cego de dezembro.</li>
+        </ul>
+
+        <div class="highlight" style="border-left-color: #e74c3c; background: #fdedec; color: #c0392b;">
+            Risco Principal (Alta): One UI (Samsung) matar app em background.<br>
+            Solução (Plano B): Serviço em Primeiro Plano e Bateria "Irrestrita".
+        </div>
+    </div>
+
+    <!-- Controles Inferiores -->
+    <div class="controls">
+        <button onclick="prevSlide()">&#9664; Anterior</button>
+        <button onclick="nextSlide()">Próximo &#9654;</button>
+    </div>
+    <div class="footer" id="slide-counter">Slide 1 de 5</div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.getElementById('slide-counter');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            counter.innerText = `Slide ${index + 1} de ${slides.length}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            else if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>

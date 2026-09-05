@@ -29,7 +29,7 @@ Prefeituras e concessionárias de rodovias dependem de inspeções visuais lenta
 
 ## 4. Dados
 - **Como serão obtidos:** Tab S9 alocado internamente em um veículo automotor em deslocamento urbano e rodoviário.
-- **Quantos dias ou execuções:** 5 gravações de no mínimo 30 minutos em pavimentos com qualidades variadas.
+- **Quantos dias ou execuções:** 5 gravações de 5 minutos em pavimentos com qualidades variadas.
 - **Separação:** 3 gravações usadas para ajuste e implementação online; 2 gravações congeladas após a coleta inicial para servirem apenas à validação cega de dezembro (AV2).
 
 ## 5. Riscos
