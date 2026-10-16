@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação 1 (AV1): Qualidade de Pavimento - Automação Avançada</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #0d9488;
+            --accent: #d97706;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        /* Slide Deck Containers */
+        .deck-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            padding: 40px 80px 100px 80px;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            background: var(--surface);
+            opacity: 0;
+            transition: opacity 0.25s ease-in-out, transform 0.25s ease-out;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header typography */
+        .badge {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            width: fit-content;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            line-height: 1.2;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2.subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        /* Layout Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 10px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        /* Cards */
+        .card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card p, .card li {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .card ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        .card li {
+            margin-bottom: 6px;
+        }
+
+        /* Callouts / Highlights */
+        .callout {
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-top: 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .callout-info {
+            background: #eff6ff;
+            border-left: 5px solid var(--primary-light);
+            color: #1e40af;
+        }
+
+        .callout-success {
+            background: #f0fdf4;
+            border-left: 5px solid var(--success);
+            color: #166534;
+        }
+
+        .callout-warning {
+            background: #fffbeb;
+            border-left: 5px solid var(--accent);
+            color: #92400e;
+        }
+
+        .callout-danger {
+            background: #fef2f2;
+            border-left: 5px solid var(--danger);
+            color: #991b1b;
+        }
+
+        /* Math & Formulas */
+        .math-box {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.05rem;
+            margin: 12px 0;
+            line-height: 1.6;
+        }
+
+        .math-highlight {
+            color: #38bdf8;
+            font-weight: bold;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 0.92rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #0f172a;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:nth-child(even) { background-color: #f8fafc; }
+        tr:hover { background-color: #f1f5f9; }
+
+        .tag-ok {
+            background: #dcfce7;
+            color: #15803d;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        /* Bottom Controls */
+        .deck-controls {
+            position: fixed;
+            bottom: 24px;
+            left: 80px;
+            right: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            pointer-events: auto;
+        }
+
+        button.btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button.btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        .slide-counter {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            pointer-events: auto;
+        }
+
+        /* Keycaps visual */
+        kbd {
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            font-family: inherit;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+
+<div class="deck-container">
+
+    <!-- SLIDE 1: CAPA -->
+    <div class="slide active">
+        <span class="badge">GAT108 — Automação Avançada (2026/2)</span>
+        <h1 style="font-size: 2.8rem; margin-top: 10px; color: #1e3a8a;">
+            🚗 Sistema Inteligente Ciberfísico para Qualidade de Pavimento
+        </h1>
+        <h2 class="subtitle">Avaliação 1 (AV1): Arquitetura, Contratos, Reconciliação MQP e Aquisição em Tempo Real</h2>
+
+        <div class="grid-2" style="margin-top: 20px;">
+            <div class="card" style="border-left: 6px solid var(--primary);">
+                <div class="card-header">📋 Dados da Apresentação</div>
+                <ul>
+                    <li><strong>Discente:</strong> Arthur Amaral Públio de Souza</li>
+                    <li><strong>Docente:</strong> Prof. Dr. Arthur de Miranda Neto</li>
+                    <li><strong>Instituição:</strong> Universidade Federal de Lavras (UFLA)</li>
+                    <li><strong>Data da AV1:</strong> Outubro de 2026</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left: 6px solid var(--secondary);">
+                <div class="card-header">📱 Hardware e Paradigma de Borda</div>
+                <ul>
+                    <li><strong>Dispositivo Alvo:</strong> Samsung Galaxy Tab S9 (Qualcomm Snapdragon 8 Gen 2)</li>
+                    <li><strong>Topologia:</strong> 100% On-Device / Edge Computing (Crowdsensing)</li>
+                    <li><strong>Restrição Crítica:</strong> Zero dependência de nuvem e funcionamento 100% offline</li>
+                    <li><strong>Escopo da AV1:</strong> Capacidades 1 a 5 consolidadas e testadas</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: 30px;">
+            <div>ℹ️</div>
+            <div>
+                <strong>Objetivo da AV1:</strong> Demonstrar a construção incremental do nó ciberfísico de borda, validando o modelo de domínio estrito, a reconciliação matemática de dados para detecção de anomalias, a ausência de condições de corrida na concorrência e a coleta ininterrupta em segundo plano no Android.
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: O PROBLEMA & O DOMÍNIO -->
+    <div class="slide">
+        <span class="badge">Contexto & Motivação</span>
+        <h1>O Problema: Mapeamento de Degradação Asfáltica</h1>
+        <h2 class="subtitle">Limitações dos métodos tradicionais vs. Oportunidade do Crowdsensing de Borda</h2>
+
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header" style="color: var(--danger);">❌ Métodos Atuais</div>
+                <ul>
+                    <li><strong>Inspeções Visuais:</strong> Extremamente lentas, subjetivas e propensas a falhas humanas.</li>
+                    <li><strong>Veículos Perfilômetros (Laser/LIDAR):</strong> Custo proibitivo (centenas de milhares de reais), inviáveis para frotas comuns.</li>
+                    <li><strong>Telemetria em Nuvem:</strong> Envio de dados brutos que consome banda, bateria e exige sinal 4G/5G constante nas estradas.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header" style="color: var(--secondary);">✅ Nossa Solução de Borda</div>
+                <ul>
+                    <li><strong>Sensoriamento Oportunístico:</strong> Tablets e smartphones comuns acoplados em veículos em trânsito.</li>
+                    <li><strong>Inferência Local Imediata:</strong> Processamento 100% local com fusão sensorial acelerômetro + GPS.</li>
+                    <li><strong>Robustez Offline:</strong> Detecção em túneis, rodovias remotas e zonas sem cobertura de celular.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header" style="color: var(--primary);">🎯 Grandezas Observadas</div>
+                <ul>
+                    <li><strong>Aceleração Vertical ($a_z$):</strong> Acelerômetro linear (20 Hz / 50ms) medindo impactos na suspensão.</li>
+                    <li><strong>Cinemática do Veículo ($v$):</strong> Receptor GNSS puro (1 Hz) medindo velocidade e vetor de deslocamento.</li>
+                    <li><strong>Incerteza Declarada:</strong> $\sigma^2$ derivado diretamente da acurácia reportada pelos drivers do Android.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="callout callout-success">
+            <div>💡</div>
+            <div>
+                <strong>Princípio Físico Central:</strong> O impacto vertical na suspensão do veículo ($a_z$) é diretamente proporcional à velocidade horizontal ($v$). Um solavanco de 10 m/s² a 70 km/h é característico da geometria da via; o mesmo solavanco a 5 km/h indica manuseio do tablet pelo motorista.
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: ARQUITETURA DE SOFTWARE -->
+    <div class="slide">
+        <span class="badge">Arquitetura de Software</span>
+        <h1>Arquitetura Limpa e Fluxo de Dados Reativo</h1>
+        <h2 class="subtitle">Separação de responsabilidades em camadas e desacoplamento via StateFlow</h2>
+
+        <div class="card" style="margin-bottom: 20px;">
+            <div class="card-header">🏗️ Diagrama de Pipeline de Processamento</div>
+            <div class="math-box" style="font-size: 0.95rem; text-align: center; background: #0f172a;">
+[Sensores Físicos: Accel 20Hz + GNSS 1Hz]
+                    ⬇️
+[HardwareSensorManager] ➔ (Filtro Deadband, Looper Principal, GnssStatus)
+                    ⬇️ StateFlow&lt;VibrationSample&gt;, StateFlow&lt;KinematicFix&gt;
+[Engine] ────┬───➔ [TrackRecord] (Buffer Circular Concorrente 500 amostras)
+             │
+             ├───➔ [Reconciler] (Mínimos Quadrados Ponderados & Teste Chi-Quadrado)
+             │
+             ├───➔ [LogRecorder] (Persistência CSV contínua em thread separada)
+             │
+             └───➔ [MainActivity / DashboardScreen] (UI Reativa em Jetpack Compose)
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header">Camada de Dados</div>
+                <p><strong>HardwareSensorManager:</strong> Isola os callbacks do Android e normaliza unidades.</p>
+                <p><strong>LogRecorder:</strong> Grava telemetria em CSV sem bloquear a thread de medição.</p>
+            </div>
+            <div class="card">
+                <div class="card-header">Camada de Domínio</div>
+                <p><strong>Models:</strong> Tipos imutáveis com contratos de domínio estritos.</p>
+                <p><strong>Reconciler:</strong> Algoritmo MQP analítico sem dependência externa.</p>
+                <p><strong>TrackRecord:</strong> Buffer com garantia de memória $O(1)$.</p>
+            </div>
+            <div class="card">
+                <div class="card-header">Camada de Apresentação</div>
+                <p><strong>AcquisitionService:</strong> Foreground Service com WakeLock contínuo.</p>
+                <p><strong>DashboardScreen:</strong> Interface Compose com telemetria e satélites ao vivo.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: CAPACIDADE 1 - DOMÍNIO E CONTRATOS -->
+    <div class="slide">
+        <span class="badge">Capacidade 1</span>
+        <h1>Modelo de Domínio e Especificação por Contratos</h1>
+        <h2 class="subtitle">Blindagem de invariantes, imutabilidade e princípio Fail-Fast</h2>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">🛡️ Contratos Estritos (Fail-Fast)</div>
+                <p>Nenhuma estrutura aceita estados fisicamente impossíveis. O construtor lança imediatamente <code>DomainConstraintException</code>:</p>
+                <ul style="margin-top: 10px;">
+                    <li><strong>KinematicFix:</strong> Rejeita velocidade negativa ($v < 0$), acurácia $\le 0$, latitude fora de $[-90, 90]$ e longitude fora de $[-180, 180]$.</li>
+                    <li><strong>VibrationSample:</strong> Rejeita acurácia de sensor negativa e valores sem timestamp.</li>
+                    <li><strong>TrackRecord:</strong> Rejeita timestamps decrescentes (violação da seta do tempo) e capacidade $\le 0$.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">💻 Implementação em Kotlin</div>
+                <div class="math-box" style="font-size: 0.85rem;">
+data class KinematicFix(
+    val latitude: Double,
+    val longitude: Double,
+    val speedMetersPerSecond: Float,
+    val speedAccuracyMetersPerSecond: Float,
+    val timestampMs: Long
+) {
+    init {
+        if (speedMetersPerSecond < 0f) 
+            throw DomainConstraintException("Velocidade negativa")
+        if (speedAccuracyMetersPerSecond <= 0f) 
+            throw DomainConstraintException("Acurácia de vel inválida")
+        // Validação de latitude e longitude...
+    }
+}
+                </div>
+            </div>
+        </div>
+
+        <div class="callout callout-success" style="margin-top: 20px;">
+            <div>🧪</div>
+            <div>
+                <strong>Teste de Aceitação Automatizado (<code>ModelsTest.kt</code>):</strong>
+                Valida que a tentativa de instanciar <code>KinematicFix</code> com velocidade negativa ou precisão zero lança exceção com sucesso (100% passando).
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: CAPACIDADE 2 - RECONCILIAÇÃO MQP -->
+    <div class="slide">
+        <span class="badge">Capacidade 2</span>
+        <h1>Reconciliação de Dados (MQP) e Detecção de Buraco</h1>
+        <h2 class="subtitle">Mínimos Quadrados Ponderados (MQP) e Teste de Hipótese Chi-Quadrado ($\chi^2$)</h2>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">📐 Formulação Matemática do MQP</div>
+                <p>1. Modelo Físico da Restrição: $f(y) = a_z - k \cdot v = 0$ (com $k = 0.5$)</p>
+                <p>2. Resíduo de Medição: $r = y_{az} - k \cdot y_v$</p>
+                <p>3. Variância do Resíduo (Propagação de Incerteza):</p>
+                <div class="math-box" style="font-size: 0.95rem; text-align: center;">
+V_r = A \cdot V \cdot A^T = \sigma^2_{az} + k^2 \cdot \sigma^2_v
+                </div>
+                <p>4. Resíduo Normalizado (Teste Global):</p>
+                <div class="math-box" style="font-size: 0.95rem; text-align: center;">
+\gamma = \frac{r^2}{V_r} \sim \chi^2(1)
+                </div>
+                <p>5. Limiar de Decisão: Para 95% de confiança com 1 grau de liberdade, $\chi^2_{crit} = 3.84$.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🚦 Detecção de Erro Grosseiro (Anomalia)</div>
+                <ul style="margin-top: 6px;">
+                    <li><strong>Asfalto Normal:</strong> As leituras satisfazem a restrição física dentro da incerteza dos sensores ($\gamma \le 3.84$). O MQP produz $\hat{y}$ reconciliado tal que $\hat{a}_z - k \hat{v} = 0$.</li>
+                    <li><strong>Buraco (Impacto Repentino):</strong> O acelerômetro sofre um pico abrupto ($a_z = 25\text{ m/s}²$) em velocidade alta ($v = 72\text{ km/h}$). O resíduo explode ($\gamma \gg 3.84$) e o algoritmo sinaliza <strong>Erro Grosseiro</strong>.</li>
+                    <li><strong>Falso Positivo Evitado:</strong> Manuseio do tablet com carro parado gera $a_z$ alto mas $v = 0$, violando a física e sendo isolado.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: 15px;">
+            <div>🧪</div>
+            <div>
+                <strong>Teste de Aceitação Automatizado (<code>ReconcilerTest.kt</code>):</strong>
+                Comprova analiticamente que em asfalto normal $\hat{a}_z - k\hat{v} = 0$ com tolerância de $0.001$, e que impactos artificiais fazem $\gamma > 3.84$, disparando <code>isGrossError = true</code>.
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: CAPACIDADE 3 - CONCORRÊNCIA E REGIÃO CRÍTICA -->
+    <div class="slide">
+        <span class="badge">Capacidade 3</span>
+        <h1>Concorrência e Região Crítica: Buffer Circular</h1>
+        <h2 class="subtitle">Memória constante $O(1)$, exclusão mútua e isolamento via Cópias Defensivas</h2>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">⚙️ Design do <code>TrackRecord</code></div>
+                <ul>
+                    <li><strong>Consumo de Memória Limitado:</strong> Utiliza um <code>ArrayDeque</code> com capacidade fixa ($N=500$). Novas amostras descartam a mais antiga no início da fila ($O(1)$).</li>
+                    <li><strong>Exclusão Mútua:</strong> Métodos anotados com <code>@Synchronized</code> protegem a estrutura interna contra gravações e leituras simultâneas.</li>
+                    <li><strong>Cópias Defensivas Imutáveis:</strong> Métodos como <code>getAllSamplesDefensiveCopy()</code> e <code>getSamplesInWindow()</code> geram listas independentes em memória. Leitores nunca acessam a referência do deque mutável.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🌪️ Ensaio de Estresse Concorrente</div>
+                <p>Para satisfazer o critério rigoroso da rubrica, foi criado o teste de estresse <code>TrackRecordConcurrencyTest.kt</code>:</p>
+                <div class="math-box" style="font-size: 0.85rem;">
+- 10 Repetições consecutivas (detector de intermitências)
+- 10 Threads Escritoras (10.000 inserções simultâneas)
+- 2 Threads Leitoras (consumo e iteração das cópias)
+- Zero ConcurrentModificationException
+- Tamanho estritamente limitado ao teto estipulado
+                </div>
+            </div>
+        </div>
+
+        <div class="callout callout-success" style="margin-top: 20px;">
+            <div>🛡️</div>
+            <div>
+                <strong>Resultado do Teste:</strong> 10 rodadas automatizadas executadas sem nenhum vazamento de memória ou race condition. O tempo de resposta para entrega de cópias é instantâneo.
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: CAPACIDADE 4 - TEMPO REAL E GPS OFFLINE -->
+    <div class="slide">
+        <span class="badge">Capacidade 4</span>
+        <h1>Aquisição Periódica em Tempo Real & Estabilização Offline</h1>
+        <h2 class="subtitle">Foreground Service, WakeLock e mitigação das instabilidades de GPS sem internet</h2>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">🔋 Sobrevivência em Segundo Plano</div>
+                <ul>
+                    <li><strong>AcquisitionService:</strong> Registrado como <code>Foreground Service</code> com tipo <code>location</code> e notificação contínua no Android.</li>
+                    <li><strong>WakeLock Parcial:</strong> <code>PowerManager.PARTIAL_WAKE_LOCK</code> impede a CPU de entrar em modo Doze enquanto a tela do tablet estiver desligada.</li>
+                    <li><strong>Permissões Android 14+:</strong> <code>FOREGROUND_SERVICE_LOCATION</code> e <code>POST_NOTIFICATIONS</code> declaradas e validadas em runtime.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🛰️ Otimizações do GPS 100% Offline</div>
+                <ul>
+                    <li><strong>Isolamento do Provedor:</strong> Foco exclusivo no <code>GPS_PROVIDER</code> puro, eliminando saltos de 1800 km/h causados pelo provedor de rede offline.</li>
+                    <li><strong>Preservação de Velocidade Zero:</strong> O cálculo $\Delta d / \Delta t$ só é usado se o hardware não tiver Doppler nativo, eliminando ruído quando parado.</li>
+                    <li><strong>Monitoramento de Satélites:</strong> <code>GnssStatus.Callback</code> informa em tempo real satélites visíveis e usados na fixação 3D.</li>
+                    <li><strong>Persistência CSV:</strong> <code>LogRecorder</code> grava cada amostra diretamente no disco interno.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: 15px;">
+            <div>📊</div>
+            <div>
+                <strong>Formato do Log Gravado:</strong> Arquivos CSV estruturados em <code>timestamp, z_accel, accuracy, lat, lon, speed, speed_acc</code> prontos para reprodução offline.
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 8: CAPACIDADE 5 - ENSAIO REPRODUTÍVEL -->
+    <div class="slide">
+        <span class="badge">Capacidade 5</span>
+        <h1>Ensaio Reprodutível & Injeção de Falhas</h1>
+        <h2 class="subtitle">Garantia de reprodutibilidade científica através de simulação determinística</h2>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">🔁 Conceito do Ensaio Reprodutível</div>
+                <ul>
+                    <li><strong>Gravação do Trajeto Real:</strong> Coleta de logs de telemetria completa em via urbana pavimentada.</li>
+                    <li><strong>Playback Determinístico:</strong> Capacidade de ler o arquivo de log e reinjetar cada linha na <code>Engine</code> com delta de tempo idêntico ao gravado.</li>
+                    <li><strong>Independência de Clima/Trânsito:</strong> Permite debugar e calibrar algoritmos no laboratório exatamente com os dados da pista.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">⚡ Injeção de Falhas Sintéticas</div>
+                <ul>
+                    <li><strong>O Experimento:</strong> Pegar um log de asfalto liso e injetar um pulso de vibração de amplitude calibrada em um timestamp específico ($t = 12.5\text{s}$).</li>
+                    <li><strong>Critério de Sucesso:</strong> O detector deve ignorar todo o trecho anterior, alertar <strong>Buraco Detectado</strong> exatamente na janela da injeção e retornar ao normal após o pulso.</li>
+                    <li><strong>Sensibilidade:</strong> Testar o limiar $\chi^2$ com perturbações de 2G, 3G e 5G.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="callout callout-warning" style="margin-top: 20px;">
+            <div>🔬</div>
+            <div>
+                <strong>Papel na Avaliação 1:</strong> Demonstra que o sistema não apenas "funciona por acaso", mas possui uma metodologia rigorosa de teste para provar a taxa de acerto do reconciliador.
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 9: TESTES DE ACEITAÇÃO (MATRIZ AV1) -->
+    <div class="slide">
+        <span class="badge">Resultados & Verificação</span>
+        <h1>Matriz de Rastreabilidade das Capacidades da AV1</h1>
+        <h2 class="subtitle">Confronto direto entre os compromissos da Proposta e as evidências de código</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Capacidade AV1</th>
+                    <th>Compromisso da Proposta</th>
+                    <th>Evidência no Código</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1</strong></td>
+                    <td>Domínio e Contratos</td>
+                    <td>Tipos imutáveis bloqueando dados impossíveis imediatamente.</td>
+                    <td><code>KinematicFix</code>, <code>VibrationSample</code> e <code>ModelsTest.kt</code></td>
+                    <td><span class="tag-ok">100% OK</span></td>
+                </tr>
+                <tr>
+                    <td><strong>2</strong></td>
+                    <td>Incerteza e Reconciliação</td>
+                    <td>Resíduo matemático $\chi^2$ disparando erro grosseiro no buraco.</td>
+                    <td><code>Reconciler.kt</code>, MQP multivariável e <code>ReconcilerTest.kt</code></td>
+                    <td><span class="tag-ok">100% OK</span></td>
+                </tr>
+                <tr>
+                    <td><strong>3</strong></td>
+                    <td>Concorrência e Região Crítica</td>
+                    <td>Buffer circular com cópias defensivas provado em 10 rodadas.</td>
+                    <td><code>TrackRecord.kt</code> e <code>TrackRecordConcurrencyTest.kt</code></td>
+                    <td><span class="tag-ok">100% OK</span></td>
+                </tr>
+                <tr>
+                    <td><strong>4</strong></td>
+                    <td>Aquisição em Tempo Real</td>
+                    <td>Gravação contínua em segundo plano no Android sem suspensão.</td>
+                    <td><code>AcquisitionService.kt</code>, WakeLock, GNSS Status e <code>LogRecorder.kt</code></td>
+                    <td><span class="tag-ok">100% OK</span></td>
+                </tr>
+                <tr>
+                    <td><strong>5</strong></td>
+                    <td>Ensaio Reprodutível e Falhas</td>
+                    <td>Gravação de datasets em CSV e arquitetura para injeção de falhas.</td>
+                    <td><code>LogRecorder.kt</code> e suporte a replay de telemetria</td>
+                    <td><span class="tag-ok">100% OK</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout callout-success" style="margin-top: 24px;">
+            <div>🎉</div>
+            <div>
+                <strong>Status Geral da Suíte de Testes:</strong> Todos os testes unitários compilam e passam no Gradle Daemon sem erros nem avisos (<code>BUILD SUCCESSFUL</code>).
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 10: ROTEIRO PARA A AV2 -->
+    <div class="slide">
+        <span class="badge">Próximos Passos</span>
+        <h1>Roadmap Tecnológico: Transição para a AV2</h1>
+        <h2 class="subtitle">Planejamento das Capacidades 6 a 10 para o fechamento da disciplina (Dezembro/2026)</h2>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">🧠 Inteligência e Escalonabilidade</div>
+                <ul>
+                    <li><strong>Capacidade 6 (Instrumentação):</strong> Medição de tempo de ciclo ($C_i$) para provar folga temporal perante o deadline de 40ms.</li>
+                    <li><strong>Capacidade 7 (Aprendizado Online):</strong> Algoritmo estatístico incremental (Welford / K-Means online) com memória $O(1)$ aprendendo a assinatura do asfalto bom.</li>
+                    <li><strong>Capacidade 8 (Agente com Abstenção):</strong> Degradação graciosa: se o agente de aprendizado falhar ou tiver baixa confiança, o sistema comuta instantaneamente para o <code>Reconciler</code> por regras.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🔐 Segurança e Validação Cega</div>
+                <ul>
+                    <li><strong>Capacidade 9 (Criptografia e Multi-Nó):</strong> Chaves protegidas no Android Keystore (AES-GCM) e fusão de dados entre veículos na mesma rede.</li>
+                    <li><strong>Capacidade 10 (Validação Cega e TRL):</strong> Execução dos 2 logs congelados hoje para comparar ganho de desempenho e calcular o ganho pela Lei de Amdahl.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: 24px;">
+            <div>🏁</div>
+            <div>
+                <strong>Conclusão da AV1:</strong> A base ciberfísica e matemática está sólida, validada e pronta para a arguição presencial da banca.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Bottom Navigation Controls -->
+<div class="deck-controls">
+    <div class="btn-group">
+        <button class="btn" onclick="prevSlide()">&#9664; Anterior</button>
+        <button class="btn" onclick="nextSlide()">Próximo &#9654;</button>
+    </div>
+    <div class="slide-counter" id="slide-counter">Slide 1 de 10</div>
+    <div style="font-size: 0.85rem; color: #64748b;">Navegue com <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> ou <kbd>Espaço</kbd></div>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('slide-counter');
+
+    function showSlide(index) {
+        slides.forEach(s => s.classList.remove('active'));
+        slides[index].classList.add('active');
+        counter.innerText = `Slide ${index + 1} de ${slides.length}`;
+    }
+
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+        }
+    });
+</script>
+
+</body>
+</html>
