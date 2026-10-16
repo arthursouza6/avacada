@@ -64,12 +64,28 @@ fun DashboardScreen(
     onStopService: () -> Unit
 ) {
     val vib by hardwareManager.latestVibration.collectAsState(initial = null)
+    val fix by hardwareManager.latestFix.collectAsState(initial = null)
     val recon by engine.latestReconciliation.collectAsState(initial = null)
     
     val isRecording by engine.isRecording.collectAsState()
     val logMessage by engine.lastLogMessage.collectAsState()
 
     var isEngineRunning by remember { mutableStateOf(false) }
+
+    val permissionLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions()
+    ) { _ -> }
+
+    LaunchedEffect(Unit) {
+        val permissions = mutableListOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+        permissionLauncher.launch(permissions.toTypedArray())
+    }
 
     Column(
         modifier = Modifier.padding(16.dp).fillMaxSize(),
@@ -116,6 +132,18 @@ fun DashboardScreen(
             title = "Acelerômetro (Eixo Z Linear)",
             value = String.format("%.2f m/s²", vib?.zAcceleration ?: 0f),
             subValue = "Qualidade do Sensor: ${vib?.accuracy ?: 0}"
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        SensorCard(
+            title = "Velocidade GPS",
+            value = String.format("%.1f km/h", (fix?.speedMetersPerSecond ?: 0f) * 3.6f),
+            subValue = if (fix != null) {
+                "Lat: ${String.format("%.5f", fix?.latitude)} | Lon: ${String.format("%.5f", fix?.longitude)}\nPrecisão: ${String.format("%.1f", fix?.speedAccuracyMetersPerSecond ?: 0f)} m/s"
+            } else {
+                "⏳ Aguardando sinal GPS..."
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))

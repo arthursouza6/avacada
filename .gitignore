@@ -1,1 +1,7 @@
 key.txt
+.gradle/
+build/
+app/build/
+.idea/
+*.iml
+.kotlin/
