@@ -31,16 +31,20 @@ class Engine(
             hardwareManager.latestVibration
                 .filterNotNull()
                 .collect { vib ->
-                    // Exige que o GPS tenha fixado para rodar o MQP (Capacidade 2 requer Z + Velocidade)
-                    val fix = hardwareManager.latestFix.value
-                    
-                    if (fix != null) {
-                        trackRecord.addSample(vib)
-                        val result = reconciler.reconcile(vib, fix)
-                        _latestReconciliation.value = result
+                    // Armazena no buffer circular da Capacidade 3 continuamente
+                    trackRecord.addSample(vib)
 
-                        if (_isRecording.value) {
-                            logRecorder.appendData(vib, fix)
+                    // Exige que o GPS tenha fix recente (< 5s) para rodar o MQP (Capacidade 2 requer Z + Velocidade)
+                    val fix = hardwareManager.latestFix.value
+                    if (fix != null) {
+                        val isFixFresh = (System.currentTimeMillis() - fix.timestampMs) <= 5000L
+                        if (isFixFresh) {
+                            val result = reconciler.reconcile(vib, fix)
+                            _latestReconciliation.value = result
+
+                            if (_isRecording.value) {
+                                logRecorder.appendData(vib, fix)
+                            }
                         }
                     }
                 }
