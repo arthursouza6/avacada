@@ -65,6 +65,7 @@ fun DashboardScreen(
 ) {
     val vib by hardwareManager.latestVibration.collectAsState(initial = null)
     val fix by hardwareManager.latestFix.collectAsState(initial = null)
+    val gpsStatus by hardwareManager.gpsStatus.collectAsState()
     val recon by engine.latestReconciliation.collectAsState(initial = null)
     
     val isRecording by engine.isRecording.collectAsState()
@@ -136,13 +137,18 @@ fun DashboardScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        val isFixFresh = fix != null && (System.currentTimeMillis() - (fix?.timestampMs ?: 0L)) < 5000L
         SensorCard(
             title = "Velocidade GPS",
-            value = String.format("%.1f km/h", (fix?.speedMetersPerSecond ?: 0f) * 3.6f),
-            subValue = if (fix != null) {
-                "Lat: ${String.format("%.5f", fix?.latitude)} | Lon: ${String.format("%.5f", fix?.longitude)}\nPrecisão: ${String.format("%.1f", fix?.speedAccuracyMetersPerSecond ?: 0f)} m/s"
+            value = if (isFixFresh) {
+                String.format("%.1f km/h", (fix?.speedMetersPerSecond ?: 0f) * 3.6f)
             } else {
-                "⏳ Aguardando sinal GPS..."
+                "--- km/h"
+            },
+            subValue = if (fix != null) {
+                "Lat: ${String.format("%.5f", fix?.latitude)} | Lon: ${String.format("%.5f", fix?.longitude)}\nPrecisão: ±${String.format("%.1f", fix?.speedAccuracyMetersPerSecond ?: 0f)} m/s • ${gpsStatus.statusMessage}"
+            } else {
+                gpsStatus.statusMessage
             }
         )
 
