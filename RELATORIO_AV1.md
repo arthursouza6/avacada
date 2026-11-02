@@ -88,16 +88,28 @@ Conforme a subseção **10.3**, esta seção apresenta os dados quantitativos, t
 ### 4.1. Panorama Geral da Base de Dados Coletada em Campo
 A validação empírica foi realizada com dados reais coletados em veículo automotor trafegando em vias urbanas e rodoviárias na região de Lavras/MG, utilizando o Samsung Galaxy Tab S9:
 
-| Arquivo de Log | Qtd. Amostras | Duração Real | Freq. Média | Z Médio | Z Máx (Pico) | Fixes GPS | Vel. Média |
+| Identificador do Ensaio | Qtd. Amostras | Duração Real | Freq. Média | Z Médio | Z Máx (Pico) | Fixes GPS | Vel. Média |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `pavement_log_20261024_121748.csv` | 20.799 | 06:58 min | 49,7 Hz | 0,084 m/s² | +16,84 m/s² | 20.799 | 24,2 km/h |
-| `pavement_log_20261024_125006.csv` | 26.787 | 08:59 min | 49,7 Hz | 0,019 m/s² | **+29,76 m/s²** | 26.787 | 21,8 km/h |
-| `pavement_log_20261024_165517.csv` | **58.673** | **26:55 min** | 36,3 Hz | 0,069 m/s² | +17,31 m/s² | 58.673 | 16,7 km/h |
-| `pavement_log_20261030_185801.csv` | 57.032 | 09:57 min | 99,3 Hz | 0,042 m/s² | +18,45 m/s² | 57.032 | 31,4 km/h |
-| `pavement_log_20261030_191832.csv` | 67.552 | 11:20 min | 99,3 Hz | 0,051 m/s² | +21,12 m/s² | 67.552 | 28,6 km/h |
-| **Total Acumulado (11 arquivos)** | **359.084** | **85:42 min** | **~50 Hz** | — | **+29,76 m/s²** | **359.084** | — |
+| **Ensaio 01 (Urbano Regular)** | 20.799 | 06:58 min | 49,7 Hz | 0,084 m/s² | +16,84 m/s² | 20.799 | 24,2 km/h |
+| **Ensaio 02 (Trecho Crítico / Buraco)** | 26.787 | 08:59 min | 49,7 Hz | 0,019 m/s² | **+29,76 m/s²** | 26.787 | 21,8 km/h |
+| **Ensaio 03 (Segundo Plano / Longa Duração)** | **58.673** | **26:55 min** | 36,3 Hz | 0,069 m/s² | +17,31 m/s² | 58.673 | 16,7 km/h |
+| **Ensaio 04 (Trecho com Ondulações)** | 17.320 | 02:53 min | 100,3 Hz | 0,197 m/s² | +22,90 m/s² | 17.320 | 97,5 km/h |
+| **Ensaio 05 (Trecho Curto com Impacto)** | 3.599 | 00:36 min | 99,2 Hz | 0,197 m/s² | +21,55 m/s² | 3.599 | 88,3 km/h |
+| **Ensaio 06 (Calibração Rápida)** | 3.138 | 00:32 min | 99,2 Hz | 0,082 m/s² | +6,59 m/s² | 3.138 | 98,6 km/h |
+| **Ensaio 07 (Trecho Contínuo Liso)** | 57.032 | 09:34 min | 99,3 Hz | 0,070 m/s² | +10,70 m/s² | 57.032 | 83,7 km/h |
+| **Ensaio 08 (Via Arterial Plana)** | 36.658 | 06:29 min | 94,2 Hz | 0,086 m/s² | +5,25 m/s² | 36.658 | 83,2 km/h |
+| **Ensaio 09 (Tráfego Urbano Fluido)** | 25.556 | 04:23 min | 97,1 Hz | 0,070 m/s² | +5,36 m/s² | 25.556 | 101,1 km/h |
+| **Ensaio 10 (Percurso Extenso Pavimentado)** | 67.552 | 11:20 min | 99,3 Hz | 0,056 m/s² | +4,86 m/s² | 67.552 | 79,7 km/h |
+| **Ensaio 11 (Trecho Misto com Solavancos)** | 41.970 | 07:03 min | 99,3 Hz | 0,050 m/s² | +23,74 m/s² | 41.970 | 33,3 km/h |
+| **Total Acumulado (11 Ensaios)** | **359.084** | **85:42 min** | **~50 Hz** | — | **+29,76 m/s²** | **359.084** | — |
 
-*Evidência da Capacidade 4:* O arquivo `pavement_log_20261024_165517.csv` comprova **26 minutos e 55 segundos ininterruptos (58.673 amostras consecutivas)** gravadas com a tela do aparelho bloqueada, demonstrando conformidade com a aquisição em segundo plano.
+*Evidência da Capacidade 4:* O ensaio **Ensaio 03 (Segundo Plano / Longa Duração)** comprova **26 minutos e 55 segundos ininterruptos (58.673 amostras consecutivas)** gravadas com a tela do aparelho bloqueada, demonstrando conformidade com a aquisição em segundo plano.
+
+![Figura 1: Séries Temporais da Aceleração Vertical nos 11 Ensaios Experimentais](docs/figuras/figura1_series_temporais_todos_ensaios.png)
+*Figura 1: Séries Temporais da Aceleração Vertical ($a_z$) ao longo dos 11 ensaios de campo coletados com o tablet veicular, evidenciando o comportamento estável da linha de base ($0\text{ m/s}²$) e o registro de picos extremos em trechos degradados.*
+
+![Figura 2: Comparativo Estatístico Geral dos Ensaios Coletados](docs/figuras/figura3_comparativo_ensaios.png)
+*Figura 2: Comparativo Estatístico dos 11 Ensaios Experimentais: (Esquerda) Volume de amostras por ensaio; (Centro) Duração cronometrada em segundos; (Direita) Dispersão de rugosidade calculada pelo desvio padrão vertical ($s_z$).*
 
 ### 4.2. Tabela de Reconciliação de Resíduo em Três Janelas Reais (Capacidade 2)
 Avaliando o comportamento do algoritmo MQP sobre trechos extraídos da base real de campo:
@@ -109,6 +121,12 @@ Avaliando o comportamento do algoritmo MQP sobre trechos extraídos da base real
 | **Janela 3 (Buraco em Campo)** | 20,0 m/s (72 km/h) | **29,76 m/s²** | **19,76 m/s²** | 0,50 | **780,9** | $\gamma \gg 3{,}84$ (**Erro Grosseiro**) | **Alerta disparado:** isola a anomalia e impede contaminação. |
 
 *Demonstração de Degradação sem o Detector:* Na Janela 3, caso o detector de erro grosseiro seja desativado, o MQP força o ajuste matemático resultando em uma velocidade estimada artificial de $\hat{v} = 24{,}9\text{ m/s}$ (distorção de +24,5%) e atenua a aceleração vertical para $\hat{a}_z = 12{,}4\text{ m/s}²$, mascarando completamente a cratera na pista.
+
+![Figura 3: Análise Multivariável Temporal: Aceleração Vertical vs Velocidade GNSS](docs/figuras/figura2_analise_multivariavel_az_velocidade.png)
+*Figura 3: Correlação temporal multivariável no ensaio de longa duração: (Superior) Oscilações verticais da suspensão ($a_z$); (Inferior) Velocidade cinemática medida pelo receptor GNSS através do deslocamento Doppler dos satélites.*
+
+![Figura 4: Assinatura Temporal da Detecção de Buraco e Estatística Qui-Quadrado](docs/figuras/figura4_zoom_deteccao_anomalia.png)
+*Figura 4: Janela temporal de 10 segundos ao redor do impacto crítico de $+29{,}76\text{ m/s}²$: (Superior) Assinatura de aceleração do buraco na suspensão; (Inferior) Disparo da estatística de resíduo normalizado $\gamma = r^2 / V_r$ superando o limiar crítico $\chi^2_{0.95}(1) = 3{,}84$ e ativando o alarme de erro grosseiro.*
 
 ### 4.3. Ensaio de Concorrência e Ausência de Corridas (Capacidade 3)
 Registro das **10 execuções consecutivas** do teste automatizado `TrackRecordConcurrencyTest.kt` (10 threads escritoras inserindo 1.000 amostras cada + 2 threads leitoras requisitando cópias defensivas):

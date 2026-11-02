@@ -216,6 +216,27 @@
             margin: 0;
         }
 
+        figure {
+            margin: 14px 0;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        figcaption {
+            font-size: 8.5pt;
+            color: #4b5563;
+            margin-top: 5px;
+            font-style: italic;
+            text-align: center;
+        }
+
         .page-break {
             page-break-before: always;
         }
@@ -317,11 +338,11 @@
         Em estrito cumprimento à subseção <strong>10.3</strong>, apresentam-se as evidências numéricas e experimentais colhidas em ensaios reais com o tablet em veículo automotor:
     </p>
 
-    <p class="table-caption"><strong>Tabela 1:</strong> Consolidação geral dos logs reais de telemetria coletados em via automotiva.</p>
+    <p class="table-caption"><strong>Tabela 1:</strong> Consolidação técnica geral dos 11 ensaios experimentais de telemetria coletados em via automotiva.</p>
     <table>
         <thead>
             <tr>
-                <th>Arquivo de Log (CSV)</th>
+                <th>Identificador do Ensaio</th>
                 <th>Amostras</th>
                 <th>Duração</th>
                 <th>Frequência</th>
@@ -333,7 +354,7 @@
         </thead>
         <tbody>
             <tr>
-                <td><code>pavement_log_20261024_121748.csv</code></td>
+                <td><strong>Ensaio 01 (Urbano Regular)</strong></td>
                 <td>20.799</td>
                 <td>06:58 min</td>
                 <td>49,7 Hz</td>
@@ -343,7 +364,7 @@
                 <td>24,2 km/h</td>
             </tr>
             <tr>
-                <td><code>pavement_log_20261024_125006.csv</code></td>
+                <td><strong>Ensaio 02 (Trecho Crítico / Buraco)</strong></td>
                 <td>26.787</td>
                 <td>08:59 min</td>
                 <td>49,7 Hz</td>
@@ -353,7 +374,7 @@
                 <td>21,8 km/h</td>
             </tr>
             <tr>
-                <td><code>pavement_log_20261024_165517.csv</code></td>
+                <td><strong>Ensaio 03 (Segundo Plano / Longa Duração)</strong></td>
                 <td><strong>58.673</strong></td>
                 <td><strong>26:55 min</strong></td>
                 <td>36,3 Hz</td>
@@ -363,27 +384,87 @@
                 <td>16,7 km/h</td>
             </tr>
             <tr>
-                <td><code>pavement_log_20261030_185801.csv</code></td>
-                <td>57.032</td>
-                <td>09:57 min</td>
-                <td>99,3 Hz</td>
-                <td>0,042 m/s²</td>
-                <td>+18,45 m/s²</td>
-                <td>57.032</td>
-                <td>31,4 km/h</td>
+                <td><strong>Ensaio 04 (Trecho com Ondulações)</strong></td>
+                <td>17.320</td>
+                <td>02:53 min</td>
+                <td>100,3 Hz</td>
+                <td>0,197 m/s²</td>
+                <td>+22,90 m/s²</td>
+                <td>17.320</td>
+                <td>97,5 km/h</td>
             </tr>
             <tr>
-                <td><code>pavement_log_20261030_191832.csv</code></td>
+                <td><strong>Ensaio 05 (Trecho Curto com Impacto)</strong></td>
+                <td>3.599</td>
+                <td>00:36 min</td>
+                <td>99,2 Hz</td>
+                <td>0,197 m/s²</td>
+                <td>+21,55 m/s²</td>
+                <td>3.599</td>
+                <td>88,3 km/h</td>
+            </tr>
+            <tr>
+                <td><strong>Ensaio 06 (Calibração Rápida)</strong></td>
+                <td>3.138</td>
+                <td>00:32 min</td>
+                <td>99,2 Hz</td>
+                <td>0,082 m/s²</td>
+                <td>+6,59 m/s²</td>
+                <td>3.138</td>
+                <td>98,6 km/h</td>
+            </tr>
+            <tr>
+                <td><strong>Ensaio 07 (Trecho Contínuo Liso)</strong></td>
+                <td>57.032</td>
+                <td>09:34 min</td>
+                <td>99,3 Hz</td>
+                <td>0,070 m/s²</td>
+                <td>+10,70 m/s²</td>
+                <td>57.032</td>
+                <td>83,7 km/h</td>
+            </tr>
+            <tr>
+                <td><strong>Ensaio 08 (Via Arterial Plana)</strong></td>
+                <td>36.658</td>
+                <td>06:29 min</td>
+                <td>94,2 Hz</td>
+                <td>0,086 m/s²</td>
+                <td>+5,25 m/s²</td>
+                <td>36.658</td>
+                <td>83,2 km/h</td>
+            </tr>
+            <tr>
+                <td><strong>Ensaio 09 (Tráfego Urbano Fluido)</strong></td>
+                <td>25.556</td>
+                <td>04:23 min</td>
+                <td>97,1 Hz</td>
+                <td>0,070 m/s²</td>
+                <td>+5,36 m/s²</td>
+                <td>25.556</td>
+                <td>101,1 km/h</td>
+            </tr>
+            <tr>
+                <td><strong>Ensaio 10 (Percurso Extenso Pavimentado)</strong></td>
                 <td>67.552</td>
                 <td>11:20 min</td>
                 <td>99,3 Hz</td>
-                <td>0,051 m/s²</td>
-                <td>+21,12 m/s²</td>
+                <td>0,056 m/s²</td>
+                <td>+4,86 m/s²</td>
                 <td>67.552</td>
-                <td>28,6 km/h</td>
+                <td>79,7 km/h</td>
             </tr>
             <tr>
-                <td><strong>Total Acumulado (11 arquivos)</strong></td>
+                <td><strong>Ensaio 11 (Trecho Misto com Solavancos)</strong></td>
+                <td>41.970</td>
+                <td>07:03 min</td>
+                <td>99,3 Hz</td>
+                <td>0,050 m/s²</td>
+                <td>+23,74 m/s²</td>
+                <td>41.970</td>
+                <td>33,3 km/h</td>
+            </tr>
+            <tr>
+                <td><strong>Total Acumulado (11 Ensaios)</strong></td>
                 <td><strong>359.084</strong></td>
                 <td><strong>85:42 min</strong></td>
                 <td><strong>~50 Hz</strong></td>
@@ -397,8 +478,18 @@
     <p class="table-source">Fonte: Dados extraídos diretamente de <code>concerns/logs/</code> e validados em <code>analise_logs.ipynb</code>.</p>
 
     <div class="highlight-box">
-        <p><strong>Evidência da Capacidade 4 (Tempo Real com Tela Bloqueada):</strong> O arquivo <code>pavement_log_20261024_165517.csv</code> comprova <strong>26 minutos e 55 segundos ininterruptos (58.673 amostras consecutivas)</strong> adquiridas e gravadas com a tela do Samsung Tab S9 totalmente desligada, atestando a robustez do <em>Foreground Service</em> e do <em>Partial WakeLock</em>.</p>
+        <p><strong>Evidência da Capacidade 4 (Tempo Real com Tela Bloqueada):</strong> O ensaio <strong>Ensaio 03 (Segundo Plano / Longa Duração)</strong> comprova <strong>26 minutos e 55 segundos ininterruptos (58.673 amostras consecutivas)</strong> adquiridas e gravadas com a tela do Samsung Tab S9 totalmente desligada, atestando a robustez do <em>Foreground Service</em> e do <em>Partial WakeLock</em>.</p>
     </div>
+
+    <figure>
+        <img src="docs/figuras/figura1_series_temporais_todos_ensaios.png" alt="Séries Temporais da Aceleração Vertical nos 11 Ensaios">
+        <figcaption><strong>Figura 1:</strong> Séries temporais da aceleração vertical (<i>a<sub>z</sub></i>) ao longo dos 11 ensaios experimentais coletados com o tablet veicular.</figcaption>
+    </figure>
+
+    <figure>
+        <img src="docs/figuras/figura3_comparativo_ensaios.png" alt="Comparativo Estatístico Geral dos Ensaios">
+        <figcaption><strong>Figura 2:</strong> Comparativo estatístico geral dos ensaios de campo: volume de amostras, duração cronometrada e dispersão de rugosidade (<i>s<sub>z</sub></i>).</figcaption>
+    </figure>
 
     <p class="table-caption"><strong>Tabela 2:</strong> Reconciliação MQP e Teste Qui-Quadrado em três janelas temporais de dados reais.</p>
     <table>
@@ -448,6 +539,16 @@
         </tbody>
     </table>
     <p class="table-source">Fonte: Execução analítica do modelo físico de <code>Reconciler.kt</code> sobre os picos registrados em campo.</p>
+
+    <figure>
+        <img src="docs/figuras/figura2_analise_multivariavel_az_velocidade.png" alt="Análise Multivariável Aceleração Z vs Velocidade">
+        <figcaption><strong>Figura 3:</strong> Correlação temporal multivariável: resposta inercial vertical da suspensão (<i>a<sub>z</sub></i>) em sincronia com a velocidade do veículo (<i>v</i>) obtida via Doppler GNSS.</figcaption>
+    </figure>
+
+    <figure>
+        <img src="docs/figuras/figura4_zoom_deteccao_anomalia.png" alt="Zoom da Detecção de Buraco e Resíduo Qui-Quadrado">
+        <figcaption><strong>Figura 4:</strong> Janela temporal de 10s no trecho crítico com impacto de +29,76 m/s²: (Superior) Pico mecânico na suspensão; (Inferior) Disparo da estatística de resíduo normalizado <i>&gamma;</i> superando o limiar crítico <i>&chi;</i>²<sub>crit</sub> = 3,84 e ativando o detector de erro grosseiro.</figcaption>
+    </figure>
 
     <p class="table-caption"><strong>Tabela 3:</strong> Ensaio de estresse de concorrência — 10 execuções do teste de corrida (Capacidade 3).</p>
     <table>
