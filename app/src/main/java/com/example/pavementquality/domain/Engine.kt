@@ -24,6 +24,8 @@ class Engine(
     private val _lastLogMessage = MutableStateFlow<String?>("Nenhum log gravado ainda.")
     val lastLogMessage: StateFlow<String?> = _lastLogMessage
 
+    val logHistory: StateFlow<List<LogEntry>> = logRecorder.logHistory
+
     fun start(scope: CoroutineScope) {
         hardwareManager.startAcquisition(scope)
         

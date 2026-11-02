@@ -24,3 +24,11 @@ data class VibrationSample(
         if (accuracy < 0) throw DomainConstraintException("Acuracia do sensor invalida: $accuracy")
     }
 }
+
+data class LogEntry(
+    val filename: String,
+    val savedAt: String,
+    val sampleCount: Int,
+    val durationFormatted: String
+)
+
