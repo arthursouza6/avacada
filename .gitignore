@@ -5,3 +5,9 @@ app/build/
 .idea/
 *.iml
 .kotlin/
+.venv/
+concerns/.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+GUIA_SOFTWARE_APP.md
