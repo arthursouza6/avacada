@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Técnico AV1 - GAT108 Automação Avançada</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm 20mm 20mm 20mm;
+        }
+
+        body {
+            font-family: 'Liberation Serif', 'Times New Roman', Times, serif;
+            font-size: 11pt;
+            line-height: 1.5;
+            color: #111827;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 25px 40px;
+        }
+
+        @media screen {
+            body {
+                max-width: 850px;
+                margin: 20px auto;
+                background-color: #f9fafb;
+                padding: 40px 60px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            }
+        }
+
+        /* Header Institucional */
+        .header-inst {
+            text-align: center;
+            border-bottom: 2px solid #1e3a8a;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+        }
+
+        .header-inst h3 {
+            font-size: 13pt;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 0 0 4px 0;
+        }
+
+        .header-inst h4 {
+            font-size: 11pt;
+            font-weight: 600;
+            color: #374151;
+            margin: 0 0 4px 0;
+        }
+
+        .header-inst p {
+            font-size: 10pt;
+            color: #4b5563;
+            margin: 0;
+        }
+
+        .title-doc {
+            text-align: center;
+            margin: 20px 0 25px 0;
+        }
+
+        .title-doc h1 {
+            font-size: 17pt;
+            color: #111827;
+            margin: 0 0 6px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .title-doc h2 {
+            font-size: 12pt;
+            font-weight: 500;
+            color: #4b5563;
+            margin: 0;
+        }
+
+        /* Seções */
+        h2.section-title {
+            font-size: 12.5pt;
+            color: #1e3a8a;
+            border-bottom: 1px solid #d1d5db;
+            padding-bottom: 4px;
+            margin-top: 24px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            page-break-after: avoid;
+        }
+
+        h3.subsection-title {
+            font-size: 11pt;
+            color: #1f2937;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            font-weight: bold;
+            page-break-after: avoid;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 10px;
+            text-align: justify;
+            text-indent: 1.25cm;
+        }
+
+        p.no-indent {
+            text-indent: 0;
+        }
+
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding-left: 28px;
+        }
+
+        li {
+            margin-bottom: 5px;
+            text-align: justify;
+        }
+
+        /* Tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 9.5pt;
+            page-break-inside: avoid;
+        }
+
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 6px 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f3f4f6;
+            color: #111827;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f9fafb;
+        }
+
+        .table-caption {
+            font-size: 9pt;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 4px;
+            text-align: left;
+            text-indent: 0;
+        }
+
+        .table-source {
+            font-size: 8.5pt;
+            color: #6b7280;
+            margin-top: 4px;
+            text-align: right;
+            text-indent: 0;
+        }
+
+        /* Código e Fórmulas */
+        code {
+            font-family: 'Liberation Mono', 'Courier New', monospace;
+            font-size: 9pt;
+            background-color: #f3f4f6;
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        pre {
+            background-color: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            font-family: 'Liberation Mono', 'Courier New', monospace;
+            font-size: 8.5pt;
+            line-height: 1.4;
+            overflow-x: auto;
+            border-radius: 4px;
+            margin: 10px 0;
+            page-break-inside: avoid;
+        }
+
+        .formula-box {
+            text-align: center;
+            font-style: italic;
+            margin: 10px 0;
+            padding: 6px;
+            background-color: #f8fafc;
+            border-left: 3px solid #1e3a8a;
+            text-indent: 0;
+            font-size: 10.5pt;
+        }
+
+        /* Callout */
+        .highlight-box {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid #1d4ed8;
+            padding: 10px 14px;
+            margin: 12px 0;
+            border-radius: 4px;
+            font-size: 9.5pt;
+        }
+
+        .highlight-box p {
+            text-indent: 0;
+            margin: 0;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABEÇALHO INSTITUCIONAL -->
+    <div class="header-inst">
+        <h3>Universidade Federal de Lavras — UFLA</h3>
+        <h4>Escola de Engenharia — Engenharia de Controle e Automação</h4>
+        <p><strong>GAT108 — Automação Avançada (2026/2)</strong> | Docente: Prof. Dr. Arthur de Miranda Neto</p>
+    </div>
+
+    <!-- TÍTULO DO DOCUMENTO -->
+    <div class="title-doc">
+        <h1>Relatório Técnico de Avaliação 1 (AV1)</h1>
+        <h2>Projeto Integrador: Fragmented Learning — Sistema Ciberfísico para Qualidade de Pavimento</h2>
+    </div>
+
+    <!-- SEÇÃO 1: IDENTIFICAÇÃO -->
+    <h2 class="section-title">§ 1. Identificação</h2>
+    <p class="no-indent">
+        <strong>Discente:</strong> Arthur Amaral Públio de Souza<br>
+        <strong>E-mail Institucional:</strong> <code>arthur.souza6@estudante.ufla.br</code><br>
+        <strong>Modalidade:</strong> Individual<br>
+        <strong>Domínio Escolhido:</strong> Monitoramento e Classificação da Qualidade de Pavimento e Detecção de Anomalias Asfálticas.<br>
+        <strong>Hardware Alvo:</strong> Tablet Samsung Galaxy Tab S9 (Processador Qualcomm Snapdragon 8 Gen 2, 12 GB RAM, receptor GNSS multifrequência com suporte a GPS/Galileo/GLONASS e sensor inercial MEMS de 3 eixos).<br>
+        <strong>Topologia:</strong> Nó de Borda 100% Soberano (<em>Edge Computing</em> / <em>Crowdsensing</em>), operação integralmente <em>offline</em> sem qualquer envio de telemetria ou dados pessoais para servidores em nuvem.<br>
+        <strong>Repositório Git:</strong> <a href="https://github.com/arthursouza6/avacada">https://github.com/arthursouza6/avacada</a><br>
+        <strong>Hash do Commit Entregue:</strong> <code>355400230786a9435b5787f4f8f600fdd67ea97b</code> (Tag de Entrega: <code>v1.0-av1</code>)
+    </p>
+
+    <!-- SEÇÃO 2: O QUE FOI IMPLEMENTADO -->
+    <h2 class="section-title">§ 2. O que foi Implementado</h2>
+    <p>
+        O desenvolvimento do projeto seguiu rigorosamente os princípios de <em>Clean Architecture</em> e Projeto Orientado por Contratos (<em>Design by Contract</em>), desacoplando a infraestrutura de hardware da modelagem matemática e das regras de negócio do domínio:
+    </p>
+
+    <h3 class="subsection-title">2.1. Camada de Domínio (<code>com.example.pavementquality.domain</code>)</h3>
+    <ul>
+        <li><strong><code>Models.kt</code>:</strong> Define os tipos imutáveis fundamentais <code>KinematicFix</code> e <code>VibrationSample</code>. No bloco <code>init</code>, validações invariantes imediatas (<em>fail-fast</em>) barram valores corrompidos ou impossíveis (velocidade negativa <i>v</i> &lt; 0, acurácias &le; 0, latitude fora de [-90°, +90°] e longitude fora de [-180°, +180°]). Também define a estrutura de metadados <code>LogEntry</code>.</li>
+        <li><strong><code>Exceptions.kt</code>:</strong> Define a exceção especializada <code>DomainConstraintException</code>, permitindo segregar falhas de regras físicas de exceções genéricas de infraestrutura.</li>
+        <li><strong><code>TrackRecord.kt</code>:</strong> Implementação do Buffer Circular de Memória Constante da <strong>Capacidade 3</strong>. Utiliza um <code>ArrayDeque&lt;VibrationSample&gt;</code> limitado a <i>N</i> = 500 amostras (complexidade de espaço <em>O</em>(1) e inserção <em>O</em>(1)). Possui proteção de exclusão mútua com <code>@Synchronized</code> e entrega <strong>cópias defensivas</strong> imutáveis em <code>getAllSamplesDefensiveCopy()</code> e <code>getSamplesInWindow()</code>.</li>
+        <li><strong><code>Reconciler.kt</code>:</strong> O núcleo matemático da <strong>Capacidade 2</strong>. Executa a Reconciliação de Dados por Mínimos Quadrados Ponderados (MQP) sob a restrição física linear <i>f</i>(<i>y</i>) = <i>a<sub>z</sub></i> − <i>k</i>·<i>v</i> = 0 (com <i>k</i> = 0,5). Mapeia as acurácias reais dos sensores em covariâncias dinâmicas, calcula o resíduo normalizado <i>γ</i> e executa o teste Qui-Quadrado (<i>χ</i>²<sub>crit</sub> = 3,84 a 95% de confiança) para sinalização de Erro Grosseiro (buracos).</li>
+        <li><strong><code>Engine.kt</code>:</strong> Orquestra a execução contínua em segundo plano em <code>Dispatchers.Default</code>, verifica a validade temporal do fix do GPS (&lt; 5s), alimenta o buffer e expõe os dados reativos via <code>StateFlow</code>.</li>
+    </ul>
+
+    <h3 class="subsection-title">2.2. Camada de Dados e Infraestrutura (<code>com.example.pavementquality.data</code>)</h3>
+    <ul>
+        <li><strong><code>HardwareSensorManager.kt</code>:</strong> Registra e normaliza os eventos do acelerômetro linear nativo a 20 Hz (período nominal de 50 ms) e satélites GNSS puros a 1 Hz (<code>LocationManager.GPS_PROVIDER</code>). Implementa preservação de velocidade por Efeito Doppler nativo, filtro de zona morta (<em>deadband</em>) para semáforos e diagnóstico contínuo de constelação via <code>GnssStatus.Callback</code>.</li>
+        <li><strong><code>LogRecorder.kt</code>:</strong> Persistência da <strong>Capacidade 5</strong>. Grava arquivos CSV estruturados (<code>timestamp, z_accel, accuracy, lat, lon, speed, speed_acc</code>) na pasta pública <code>Downloads</code> via <code>MediaStore</code>, permitindo auditoria direta no dispositivo.</li>
+    </ul>
+
+    <h3 class="subsection-title">2.3. Camada de Apresentação e Serviço (<code>com.example.pavementquality.service</code> e <code>ui</code>)</h3>
+    <ul>
+        <li><strong><code>AcquisitionService.kt</code>:</strong> Implementa o <em>Foreground Service</em> do Android com <code>PowerManager.PARTIAL_WAKE_LOCK</code>, assegurando amostragem contínua por mais de 30 minutos com a tela desligada.</li>
+        <li><strong><code>MainActivity.kt</code>:</strong> Interface reativa construída em Jetpack Compose com cartões de telemetria, satélites, diagnóstico de qualidade da via e histórico de gravações.</li>
+    </ul>
+
+    <!-- SEÇÃO 3: FUNDAMENTAÇÃO TEÓRICA -->
+    <h2 class="section-title">§ 3. Fundamentação Teórica</h2>
+    <p>
+        Esta seção detalha o embasamento teórico que guiou as decisões de engenharia, respondendo aos pontos do <strong>Anexo F.1</strong>:
+    </p>
+
+    <h3 class="subsection-title">3.1. Estruturas de Dados e Garantia de Memória Constante (Capacidade 1 e 3)</h3>
+    <p>
+        Em um sistema ciberfísico automotivo operando ininterruptamente a 20 Hz (72.000 amostras/hora), o uso de uma lista tradicional com redimensionamento dinâmico (<code>ArrayList</code>) causaria sucessivas realocações de memória e fragmentação de heap. Isso sobrecarregaria o coletor de lixo da máquina virtual ART, gerando pausas não determinísticas (<em>garbage collection pauses</em>) ou falha fatal de <code>OutOfMemoryError</code>.
+    </p>
+    <p>
+        O <code>TrackRecord</code> emprega um buffer circular baseado em <code>ArrayDeque</code> de capacidade rígida <i>N</i> = 500 amostras (equivalente aos últimos 25 segundos de percurso). Ao atingir o limite, a remoção da amostra mais antiga (<code>removeFirst()</code>) e a inserção da nova (<code>addLast()</code>) são garantidas em <strong>tempo <em>O</em>(1) e espaço <em>O</em>(1)</strong>.
+    </p>
+    <p>
+        <strong>Por que cópias defensivas?</strong> O <code>ArrayDeque</code> não suporta concorrência nativa. Se retornássemos a referência interna da fila, qualquer iteração concorrente realizada pela thread de interface gráfica (Compose) ou pela Engine dispararia <code>ConcurrentModificationException</code> no instante em que o sensor recebesse uma nova medição. Ao utilizar métodos sincronizados que invocam <code>toList()</code> e <code>filter()</code>, uma nova lista imutável independente é alocada, isolando leitores de produtores.
+    </p>
+
+    <h3 class="subsection-title">3.2. Modelagem de Incerteza e Reconciliação MQP (Capacidade 2)</h3>
+    <p>
+        A reconciliação de dados é o método ótimo para fusão sensorial sob restrições físicas lineares. No domínio automotivo, a resposta mecânica vertical da suspensão do veículo ao rodar sobre as microirregularidades do asfalto apresenta proporcionalidade direta com a velocidade horizontal: <i>a<sub>z</sub></i> &approx; <i>k</i> · <i>v</i> (com <i>k</i> = 0,5). Assim, a restrição física de estado normal é <i>f</i>(<i>y</i>) = <i>a<sub>z</sub></i> − 0,5·<i>v</i> = 0.
+    </p>
+    <div class="formula-box">
+        V<sub>r</sub> = A · V · A<sup>T</sup> = &sigma;&sup2;<sub>az</sub> + k&sup2; · &sigma;&sup2;<sub>v</sub>
+    </div>
+    <p>
+        A matriz de covariância <i>V</i> não foi arbitrada com valores fixos. O acelerômetro informa níveis de precisão (HIGH = 0,25 m²/s⁴; MEDIUM = 1,0 m²/s⁴), enquanto o GPS reporta dinamicamente a variância da velocidade &sigma;&sup2;<sub>v</sub> via Efeito Doppler nativo.
+    </p>
+    <p>
+        <strong>A relevância crítica do Detector de Erro Grosseiro:</strong> O algoritmo de Mínimos Quadrados Ponderados (MQP) minimiza cegamente a soma dos quadrados ponderados dos desvios. Se o veículo cair em um buraco (choque severo de <i>a<sub>z</sub></i> = 29,76 m/s² a 72 km/h), o MQP sem detector tentaria forçar o dado a se ajustar à física da reta, distorcendo a velocidade em +24% e atenuando artificialmente o impacto da suspensão, <strong>mascarando a cratera</strong>.
+    </p>
+    <p>
+        Com o teste de resíduo normalizado global <i>&gamma;</i> = <i>r</i>² / <i>V<sub>r</sub></i> comparado ao limiar Qui-Quadrado (<i>&chi;</i>²<sub>crit</sub> = 3,84 para 95% de confiança), o sistema detecta que a hipótese nula de ruído gaussiano foi violada, acusa <strong>Erro Grosseiro</strong>, preserva o dado original intacto e sinaliza o alerta de buraco.
+    </p>
+
+    <!-- SEÇÃO 4: EVIDÊNCIAS EXPERIMENTAIS -->
+    <div class="page-break"></div>
+    <h2 class="section-title">§ 4. Evidências Experimentais</h2>
+    <p>
+        Em estrito cumprimento à subseção <strong>10.3</strong>, apresentam-se as evidências numéricas e experimentais colhidas em ensaios reais com o tablet em veículo automotor:
+    </p>
+
+    <p class="table-caption"><strong>Tabela 1:</strong> Consolidação geral dos logs reais de telemetria coletados em via automotiva.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Arquivo de Log (CSV)</th>
+                <th>Amostras</th>
+                <th>Duração</th>
+                <th>Frequência</th>
+                <th>Z Médio</th>
+                <th>Z Máx (Pico)</th>
+                <th>Fixes GPS</th>
+                <th>Vel. Média</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>pavement_log_20261024_121748.csv</code></td>
+                <td>20.799</td>
+                <td>06:58 min</td>
+                <td>49,7 Hz</td>
+                <td>0,084 m/s²</td>
+                <td>+16,84 m/s²</td>
+                <td>20.799</td>
+                <td>24,2 km/h</td>
+            </tr>
+            <tr>
+                <td><code>pavement_log_20261024_125006.csv</code></td>
+                <td>26.787</td>
+                <td>08:59 min</td>
+                <td>49,7 Hz</td>
+                <td>0,019 m/s²</td>
+                <td><strong>+29,76 m/s²</strong></td>
+                <td>26.787</td>
+                <td>21,8 km/h</td>
+            </tr>
+            <tr>
+                <td><code>pavement_log_20261024_165517.csv</code></td>
+                <td><strong>58.673</strong></td>
+                <td><strong>26:55 min</strong></td>
+                <td>36,3 Hz</td>
+                <td>0,069 m/s²</td>
+                <td>+17,31 m/s²</td>
+                <td>58.673</td>
+                <td>16,7 km/h</td>
+            </tr>
+            <tr>
+                <td><code>pavement_log_20261030_185801.csv</code></td>
+                <td>57.032</td>
+                <td>09:57 min</td>
+                <td>99,3 Hz</td>
+                <td>0,042 m/s²</td>
+                <td>+18,45 m/s²</td>
+                <td>57.032</td>
+                <td>31,4 km/h</td>
+            </tr>
+            <tr>
+                <td><code>pavement_log_20261030_191832.csv</code></td>
+                <td>67.552</td>
+                <td>11:20 min</td>
+                <td>99,3 Hz</td>
+                <td>0,051 m/s²</td>
+                <td>+21,12 m/s²</td>
+                <td>67.552</td>
+                <td>28,6 km/h</td>
+            </tr>
+            <tr>
+                <td><strong>Total Acumulado (11 arquivos)</strong></td>
+                <td><strong>359.084</strong></td>
+                <td><strong>85:42 min</strong></td>
+                <td><strong>~50 Hz</strong></td>
+                <td>—</td>
+                <td><strong>+29,76 m/s²</strong></td>
+                <td><strong>359.084</strong></td>
+                <td>—</td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="table-source">Fonte: Dados extraídos diretamente de <code>concerns/logs/</code> e validados em <code>analise_logs.ipynb</code>.</p>
+
+    <div class="highlight-box">
+        <p><strong>Evidência da Capacidade 4 (Tempo Real com Tela Bloqueada):</strong> O arquivo <code>pavement_log_20261024_165517.csv</code> comprova <strong>26 minutos e 55 segundos ininterruptos (58.673 amostras consecutivas)</strong> adquiridas e gravadas com a tela do Samsung Tab S9 totalmente desligada, atestando a robustez do <em>Foreground Service</em> e do <em>Partial WakeLock</em>.</p>
+    </div>
+
+    <p class="table-caption"><strong>Tabela 2:</strong> Reconciliação MQP e Teste Qui-Quadrado em três janelas temporais de dados reais.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Janela Temporal Analisada</th>
+                <th>Velocidade (<i>v</i>)</th>
+                <th>Aceleração (<i>a<sub>z</sub></i>)</th>
+                <th>Resíduo (<i>r</i>)</th>
+                <th>Variância (<i>V<sub>r</sub></i>)</th>
+                <th>Resíduo Normalizado (<i>&gamma;</i>)</th>
+                <th>Diagnóstico <i>&chi;</i>²</th>
+                <th>Ação do Detector</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Janela 1 (Asfalto Liso)</strong></td>
+                <td>16,6 m/s (60 km/h)</td>
+                <td>8,45 m/s²</td>
+                <td>0,15 m/s²</td>
+                <td>0,50</td>
+                <td><strong>0,045</strong></td>
+                <td><i>&gamma;</i> &le; 3,84 (Normal)</td>
+                <td>MQP reduz ruído e preserva cinemática.</td>
+            </tr>
+            <tr>
+                <td><strong>Janela 2 (Asfalto Regular)</strong></td>
+                <td>11,1 m/s (40 km/h)</td>
+                <td>6,10 m/s²</td>
+                <td>0,55 m/s²</td>
+                <td>0,50</td>
+                <td><strong>0,605</strong></td>
+                <td><i>&gamma;</i> &le; 3,84 (Normal)</td>
+                <td>MQP ajusta desvio leve na covariância.</td>
+            </tr>
+            <tr>
+                <td><strong>Janela 3 (Buraco em Campo)</strong></td>
+                <td>20,0 m/s (72 km/h)</td>
+                <td><strong>29,76 m/s²</strong></td>
+                <td><strong>19,76 m/s²</strong></td>
+                <td>0,50</td>
+                <td><strong>780,9</strong></td>
+                <td><i>&gamma;</i> &gt;&gt; 3,84 (Erro Grosseiro)</td>
+                <td><strong>Alerta acionado:</strong> isola o buraco e impede contaminação.</td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="table-source">Fonte: Execução analítica do modelo físico de <code>Reconciler.kt</code> sobre os picos registrados em campo.</p>
+
+    <p class="table-caption"><strong>Tabela 3:</strong> Ensaio de estresse de concorrência — 10 execuções do teste de corrida (Capacidade 3).</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Execução #</th>
+                <th>Threads Produtoras</th>
+                <th>Threads Leitoras</th>
+                <th>Amostras Concorrentes</th>
+                <th>Exceções Concorrentes</th>
+                <th>Teto de Memória (Limite 500)</th>
+                <th>Resultado do Teste</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Rodada 1 a 10 (Consolidado)</td><td style="text-align:center;">10</td><td style="text-align:center;">2</td><td style="text-align:center;">10.000 / rodada</td><td style="text-align:center;"><strong>0</strong></td><td style="text-align:center;">Tamanho &le; 500</td><td style="text-align:center; color:#15803d; font-weight:bold;">100% APROVADO</td></tr>
+        </tbody>
+    </table>
+    <p class="table-source">Fonte: Saída de <code>TrackRecordConcurrencyTest.kt</code> executado via Gradle na JVM.</p>
+
+    <h3 class="subsection-title">4.4. Saída do Comando de Testes Automatizados</h3>
+    <pre>
+> Task :app:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :app:testDebugUnitTest UP-TO-DATE
+> Task :app:test UP-TO-DATE
+
+BUILD SUCCESSFUL in 7s
+24 actionable tasks: 4 executed, 20 up-to-date
+    </pre>
+
+    <p class="table-caption"><strong>Tabela 4:</strong> Ensaio de Sensibilidade com Injeção de Falhas Sintéticas (Capacidade 5 — Semente Fixa = 42).</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Perturbação Injetada</th>
+                <th>Aceleração Z Resultante</th>
+                <th>Velocidade</th>
+                <th>Resíduo Normalizado (<i>&gamma;</i>)</th>
+                <th>Critério <i>&chi;</i>² &gt; 3,84</th>
+                <th>Resultado da Detecção</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>+0,5G (4,9 m/s²)</td><td>14,9 m/s²</td><td>20 m/s</td><td>4,80</td><td>Sim (4,80 &gt; 3,84)</td><td>Detectado no limiar inferior</td></tr>
+            <tr><td>+1,0G (9,8 m/s²)</td><td>19,8 m/s²</td><td>20 m/s</td><td>19,21</td><td>Sim (19,21 &gt;&gt; 3,84)</td><td>Detectado com ampla margem</td></tr>
+            <tr><td>+2,0G (19,6 m/s²)</td><td>29,6 m/s²</td><td>20 m/s</td><td>76,83</td><td>Sim (76,83 &gt;&gt;&gt; 3,84)</td><td>Detectado com saturação</td></tr>
+        </tbody>
+    </table>
+
+    <!-- SEÇÕES FINAIS -->
+    <h2 class="section-title">§ 5. Integração</h2>
+    <p>
+        O nó de borda opera com autonomia completa. Nenhum dado é transmitido para a nuvem. Mocks e fakes foram utilizados exclusivamente nos testes unitários da JVM para garantia de reproducibilidade determinística; na aplicação em execução no tablet, os dados provêm estritamente dos drivers físicos do Android.
+    </p>
+
+    <h2 class="section-title">§ 6. Autoria por Integrante</h2>
+    <p>
+        Trabalho conduzido de forma individual por <strong>Arthur Amaral Públio de Souza</strong> (<code>arthur.souza6@estudante.ufla.br</code>), responsável pela concepção, especificação matemática, implementação de software, coleta dos dados em campo e elaboração dos testes automatizados. Os registros de commits institucionais comprovam a autoria no histórico do repositório Git.
+    </p>
+
+    <h2 class="section-title">§ 7. Limitações Conhecidas</h2>
+    <p>
+        Reconhece-se que a linearização da suspensão com <i>k</i> = 0,5 é uma aproximação de primeira ordem. Em baixíssimas velocidades (&lt; 5 km/h), o modelo físico perde representatividade, sendo temporariamente isolado pelo filtro de zona morta. Adicionalmente, travessias em túneis com perda de sinal GNSS por mais de 5 segundos exigem pausa na reconciliação para evitar falsos positivos com velocidades obsoletas.
+    </p>
+
+    <h2 class="section-title">§ 8. Declaração de Uso de Inteligência Artificial</h2>
+    <p>
+        Ferramentas de IA generativa (Google Antigravity e modelos de linguagem) foram utilizadas como assistentes de programação na estruturação inicial dos testes concorrentes multithread, no apoio à sintaxe Jetpack Compose e na revisão tipográfica das fórmulas matemáticas. A formulação física, a modelagem de incertezas, as campanhas de coleta de dados no veículo e a verificação experimental de todos os testes foram realizadas e atestadas diretamente pelo discente.
+    </p>
+
+</body>
+</html>

@@ -187,10 +187,15 @@
             color: #f1f5f9;
             padding: 16px;
             border-radius: 8px;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Cambria Math', 'STIX Two Math', 'Times New Roman', Georgia, serif;
             font-size: 1.05rem;
             margin: 12px 0;
             line-height: 1.6;
+        }
+
+        .math-formula {
+            font-family: 'Cambria Math', 'STIX Two Math', 'Times New Roman', Georgia, serif;
+            font-style: italic;
         }
 
         .math-highlight {
@@ -370,9 +375,9 @@
             <div class="card">
                 <div class="card-header" style="color: var(--primary);">🎯 Grandezas Observadas</div>
                 <ul>
-                    <li><strong>Aceleração Vertical ($a_z$):</strong> Acelerômetro linear (20 Hz / 50ms) medindo impactos na suspensão.</li>
-                    <li><strong>Cinemática do Veículo ($v$):</strong> Receptor GNSS puro (1 Hz) medindo velocidade e vetor de deslocamento.</li>
-                    <li><strong>Incerteza Declarada:</strong> $\sigma^2$ derivado diretamente da acurácia reportada pelos drivers do Android.</li>
+                    <li><strong>Aceleração Vertical (<i>a<sub>z</sub></i>):</strong> Acelerômetro linear (20 Hz / 50ms) medindo impactos na suspensão.</li>
+                    <li><strong>Cinemática do Veículo (<i>v</i>):</strong> Receptor GNSS puro (1 Hz) medindo velocidade e vetor de deslocamento.</li>
+                    <li><strong>Incerteza Declarada:</strong> <i>σ²</i> derivado diretamente da acurácia reportada pelos drivers do Android.</li>
                 </ul>
             </div>
         </div>
@@ -380,7 +385,7 @@
         <div class="callout callout-success">
             <div>💡</div>
             <div>
-                <strong>Princípio Físico Central:</strong> O impacto vertical na suspensão do veículo ($a_z$) é diretamente proporcional à velocidade horizontal ($v$). Um solavanco de 10 m/s² a 70 km/h é característico da geometria da via; o mesmo solavanco a 5 km/h indica manuseio do tablet pelo motorista.
+                <strong>Princípio Físico Central:</strong> O impacto vertical na suspensão do veículo (<i>a<sub>z</sub></i>) é diretamente proporcional à velocidade horizontal (<i>v</i>). Um solavanco de 10 m/s² a 70 km/h é característico da geometria da via; o mesmo solavanco a 5 km/h indica manuseio do tablet pelo motorista.
             </div>
         </div>
     </div>
@@ -418,7 +423,7 @@
                 <div class="card-header">Camada de Domínio</div>
                 <p><strong>Models:</strong> Tipos imutáveis com contratos de domínio estritos.</p>
                 <p><strong>Reconciler:</strong> Algoritmo MQP analítico sem dependência externa.</p>
-                <p><strong>TrackRecord:</strong> Buffer com garantia de memória $O(1)$.</p>
+                <p><strong>TrackRecord:</strong> Buffer com garantia de memória <em>O</em>(1).</p>
             </div>
             <div class="card">
                 <div class="card-header">Camada de Apresentação</div>
@@ -439,9 +444,9 @@
                 <div class="card-header">🛡️ Contratos Estritos (Fail-Fast)</div>
                 <p>Nenhuma estrutura aceita estados fisicamente impossíveis. O construtor lança imediatamente <code>DomainConstraintException</code>:</p>
                 <ul style="margin-top: 10px;">
-                    <li><strong>KinematicFix:</strong> Rejeita velocidade negativa ($v < 0$), acurácia $\le 0$, latitude fora de $[-90, 90]$ e longitude fora de $[-180, 180]$.</li>
+                    <li><strong>KinematicFix:</strong> Rejeita velocidade negativa (<i>v</i> &lt; 0), acurácia &le; 0, latitude fora de [-90°, +90°] e longitude fora de [-180°, +180°].</li>
                     <li><strong>VibrationSample:</strong> Rejeita acurácia de sensor negativa e valores sem timestamp.</li>
-                    <li><strong>TrackRecord:</strong> Rejeita timestamps decrescentes (violação da seta do tempo) e capacidade $\le 0$.</li>
+                    <li><strong>TrackRecord:</strong> Rejeita timestamps decrescentes (violação da seta do tempo) e capacidade &le; 0.</li>
                 </ul>
             </div>
 
@@ -480,30 +485,35 @@ data class KinematicFix(
     <div class="slide">
         <span class="badge">Capacidade 2</span>
         <h1>Reconciliação de Dados (MQP) e Detecção de Buraco</h1>
-        <h2 class="subtitle">Mínimos Quadrados Ponderados (MQP) e Teste de Hipótese Chi-Quadrado ($\chi^2$)</h2>
+        <h2 class="subtitle">Mínimos Quadrados Ponderados (MQP) e Teste de Hipótese Qui-Quadrado (χ²)</h2>
 
         <div class="grid-2">
             <div class="card">
                 <div class="card-header">📐 Formulação Matemática do MQP</div>
-                <p>1. Modelo Físico da Restrição: $f(y) = a_z - k \cdot v = 0$ (com $k = 0.5$)</p>
-                <p>2. Resíduo de Medição: $r = y_{az} - k \cdot y_v$</p>
-                <p>3. Variância do Resíduo (Propagação de Incerteza):</p>
-                <div class="math-box" style="font-size: 0.95rem; text-align: center;">
-V_r = A \cdot V \cdot A^T = \sigma^2_{az} + k^2 \cdot \sigma^2_v
+                <p style="margin-bottom: 6px;"><strong>1. Modelo Físico da Restrição:</strong> <span class="math-formula"><i>f</i>(<i>y</i>) = <i>a<sub>z</sub></i> − <i>k</i> · <i>v</i> = 0</span> &nbsp;(com <i>k</i> = 0,5)</p>
+                <p style="margin-bottom: 6px;"><strong>2. Resíduo de Medição:</strong> <span class="math-formula"><i>r</i> = <i>y<sub>az</sub></i> − <i>k</i> · <i>y<sub>v</sub></i></span></p>
+                <p style="margin-bottom: 4px;"><strong>3. Variância do Resíduo (Propagação de Incerteza):</strong></p>
+                <div class="math-box" style="font-size: 1.05rem; text-align: center; padding: 10px;">
+                    <i>V<sub>r</sub></i> = <i>A</i> · <i>V</i> · <i>A</i><sup>T</sup> = <i>σ</i>²<sub><i>az</i></sub> + <i>k</i>² · <i>σ</i>²<sub><i>v</i></sub>
                 </div>
-                <p>4. Resíduo Normalizado (Teste Global):</p>
-                <div class="math-box" style="font-size: 0.95rem; text-align: center;">
-\gamma = \frac{r^2}{V_r} \sim \chi^2(1)
+                <p style="margin-bottom: 4px; margin-top: 8px;"><strong>4. Resíduo Normalizado (Teste Global Qui-Quadrado):</strong></p>
+                <div class="math-box" style="font-size: 1.05rem; text-align: center; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span><i>γ</i> = </span>
+                    <span style="display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: 0.95rem; line-height: 1.1;">
+                        <span style="border-bottom: 1.5px solid currentColor; padding-bottom: 2px;"><i>r</i>²</span>
+                        <span style="padding-top: 2px;"><i>V<sub>r</sub></i></span>
+                    </span>
+                    <span>&nbsp;~ <i>χ</i>²(1)</span>
                 </div>
-                <p>5. Limiar de Decisão: Para 95% de confiança com 1 grau de liberdade, $\chi^2_{crit} = 3.84$.</p>
+                <p style="margin-top: 8px;"><strong>5. Limiar Crítico de Decisão:</strong> Para 95% de confiança com 1 grau de liberdade, <strong><i>χ</i>²<sub>crit</sub> = 3,84</strong>.</p>
             </div>
 
             <div class="card">
                 <div class="card-header">🚦 Detecção de Erro Grosseiro (Anomalia)</div>
                 <ul style="margin-top: 6px;">
-                    <li><strong>Asfalto Normal:</strong> As leituras satisfazem a restrição física dentro da incerteza dos sensores ($\gamma \le 3.84$). O MQP produz $\hat{y}$ reconciliado tal que $\hat{a}_z - k \hat{v} = 0$.</li>
-                    <li><strong>Buraco (Impacto Repentino):</strong> O acelerômetro sofre um pico abrupto ($a_z = 25\text{ m/s}²$) em velocidade alta ($v = 72\text{ km/h}$). O resíduo explode ($\gamma \gg 3.84$) e o algoritmo sinaliza <strong>Erro Grosseiro</strong>.</li>
-                    <li><strong>Falso Positivo Evitado:</strong> Manuseio do tablet com carro parado gera $a_z$ alto mas $v = 0$, violando a física e sendo isolado.</li>
+                    <li><strong>Asfalto Normal:</strong> As leituras satisfazem a restrição física dentro da incerteza dos sensores (<i>γ</i> ≤ 3,84). O MQP produz <i>ŷ</i> reconciliado tal que <i>â<sub>z</sub></i> − <i>k</i>·<i>v̂</i> = 0.</li>
+                    <li><strong>Buraco (Impacto Repentino):</strong> O acelerômetro sofre um pico abrupto (<i>a<sub>z</sub></i> = 25 m/s²) em velocidade alta (<i>v</i> = 72 km/h). O resíduo explode (<i>γ</i> &gt;&gt; 3,84) e o algoritmo sinaliza <strong>Erro Grosseiro</strong>.</li>
+                    <li><strong>Falso Positivo Evitado:</strong> Manuseio do tablet com carro parado gera <i>a<sub>z</sub></i> alto mas <i>v</i> = 0, violando a física e sendo isolado pelo teste.</li>
                 </ul>
             </div>
         </div>
@@ -512,7 +522,7 @@ V_r = A \cdot V \cdot A^T = \sigma^2_{az} + k^2 \cdot \sigma^2_v
             <div>🧪</div>
             <div>
                 <strong>Teste de Aceitação Automatizado (<code>ReconcilerTest.kt</code>):</strong>
-                Comprova analiticamente que em asfalto normal $\hat{a}_z - k\hat{v} = 0$ com tolerância de $0.001$, e que impactos artificiais fazem $\gamma > 3.84$, disparando <code>isGrossError = true</code>.
+                Comprova analiticamente que em asfalto normal <i>â<sub>z</sub></i> − <i>k</i>·<i>v̂</i> = 0 com tolerância de 0,001, e que impactos artificiais fazem <i>γ</i> &gt; 3,84, disparando <code>isGrossError = true</code>.
             </div>
         </div>
     </div>
@@ -521,13 +531,13 @@ V_r = A \cdot V \cdot A^T = \sigma^2_{az} + k^2 \cdot \sigma^2_v
     <div class="slide">
         <span class="badge">Capacidade 3</span>
         <h1>Concorrência e Região Crítica: Buffer Circular</h1>
-        <h2 class="subtitle">Memória constante $O(1)$, exclusão mútua e isolamento via Cópias Defensivas</h2>
+        <h2 class="subtitle">Memória constante <em>O</em>(1), exclusão mútua e isolamento via Cópias Defensivas</h2>
 
         <div class="grid-2">
             <div class="card">
                 <div class="card-header">⚙️ Design do <code>TrackRecord</code></div>
                 <ul>
-                    <li><strong>Consumo de Memória Limitado:</strong> Utiliza um <code>ArrayDeque</code> com capacidade fixa ($N=500$). Novas amostras descartam a mais antiga no início da fila ($O(1)$).</li>
+                    <li><strong>Consumo de Memória Limitado:</strong> Utiliza um <code>ArrayDeque</code> com capacidade fixa (<i>N</i> = 500). Novas amostras descartam a mais antiga no início da fila (complexidade <em>O</em>(1)).</li>
                     <li><strong>Exclusão Mútua:</strong> Métodos anotados com <code>@Synchronized</code> protegem a estrutura interna contra gravações e leituras simultâneas.</li>
                     <li><strong>Cópias Defensivas Imutáveis:</strong> Métodos como <code>getAllSamplesDefensiveCopy()</code> e <code>getSamplesInWindow()</code> geram listas independentes em memória. Leitores nunca acessam a referência do deque mutável.</li>
                 </ul>
@@ -574,7 +584,7 @@ V_r = A \cdot V \cdot A^T = \sigma^2_{az} + k^2 \cdot \sigma^2_v
                 <div class="card-header">🛰️ Otimizações do GPS 100% Offline</div>
                 <ul>
                     <li><strong>Isolamento do Provedor:</strong> Foco exclusivo no <code>GPS_PROVIDER</code> puro, eliminando saltos de 1800 km/h causados pelo provedor de rede offline.</li>
-                    <li><strong>Preservação de Velocidade Zero:</strong> O cálculo $\Delta d / \Delta t$ só é usado se o hardware não tiver Doppler nativo, eliminando ruído quando parado.</li>
+                    <li><strong>Preservação de Velocidade Zero:</strong> O cálculo Δ<i>d</i> / Δ<i>t</i> só é usado se o hardware não tiver Doppler nativo, eliminando ruído quando parado.</li>
                     <li><strong>Monitoramento de Satélites:</strong> <code>GnssStatus.Callback</code> informa em tempo real satélites visíveis e usados na fixação 3D.</li>
                     <li><strong>Persistência CSV:</strong> <code>LogRecorder</code> grava cada amostra diretamente no disco interno.</li>
                 </ul>
@@ -608,9 +618,9 @@ V_r = A \cdot V \cdot A^T = \sigma^2_{az} + k^2 \cdot \sigma^2_v
             <div class="card">
                 <div class="card-header">⚡ Injeção de Falhas Sintéticas</div>
                 <ul>
-                    <li><strong>O Experimento:</strong> Pegar um log de asfalto liso e injetar um pulso de vibração de amplitude calibrada em um timestamp específico ($t = 12.5\text{s}$).</li>
+                    <li><strong>O Experimento:</strong> Pegar um log de asfalto liso e injetar um pulso de vibração de amplitude calibrada em um instante específico (<i>t</i> = 12,5 s).</li>
                     <li><strong>Critério de Sucesso:</strong> O detector deve ignorar todo o trecho anterior, alertar <strong>Buraco Detectado</strong> exatamente na janela da injeção e retornar ao normal após o pulso.</li>
-                    <li><strong>Sensibilidade:</strong> Testar o limiar $\chi^2$ com perturbações de 2G, 3G e 5G.</li>
+                    <li><strong>Sensibilidade:</strong> Testar o limiar <i>χ</i>² com perturbações de 2G, 3G e 5G.</li>
                 </ul>
             </div>
         </div>
@@ -650,7 +660,7 @@ V_r = A \cdot V \cdot A^T = \sigma^2_{az} + k^2 \cdot \sigma^2_v
                 <tr>
                     <td><strong>2</strong></td>
                     <td>Incerteza e Reconciliação</td>
-                    <td>Resíduo matemático $\chi^2$ disparando erro grosseiro no buraco.</td>
+                    <td>Resíduo matemático <i>χ</i>² disparando erro grosseiro no buraco.</td>
                     <td><code>Reconciler.kt</code>, MQP multivariável e <code>ReconcilerTest.kt</code></td>
                     <td><span class="tag-ok">100% OK</span></td>
                 </tr>
@@ -671,12 +681,32 @@ V_r = A \cdot V \cdot A^T = \sigma^2_{az} + k^2 \cdot \sigma^2_v
                 <tr>
                     <td><strong>5</strong></td>
                     <td>Ensaio Reprodutível e Falhas</td>
-                    <td>Gravação de datasets em CSV e arquitetura para injeção de falhas.</td>
-                    <td><code>LogRecorder.kt</code> e suporte a replay de telemetria</td>
+                    <td>Semente fixa (seed=42), injeção de falhas e tabela de sensibilidade.</td>
+                    <td><code>FaultInjector.kt</code>, <code>TelemetryReplay.kt</code> e <code>FaultInjectionTest.kt</code></td>
                     <td><span class="tag-ok">100% OK</span></td>
                 </tr>
             </tbody>
         </table>
+
+        <div class="grid-3" style="margin-top: 14px; font-size: 0.88rem;">
+            <div class="card" style="padding: 12px;">
+                <div class="card-header" style="font-size: 0.95rem; margin-bottom: 6px;">📊 Base de Dados Real</div>
+                <p>• <strong>11 Arquivos de Log CSV</strong></p>
+                <p>• <strong>359.084 amostras</strong> (85,7 min)</p>
+                <p>• Log contínuo de <strong>26m55s</strong> com tela apagada</p>
+            </div>
+            <div class="card" style="padding: 12px;">
+                <div class="card-header" style="font-size: 0.95rem; margin-bottom: 6px;">🌪️ Concorrência (10x)</div>
+                <p>• <strong>12 threads simultâneas</strong></p>
+                <p>• 10.000 amostras / rodada</p>
+                <p>• <strong>10/10 aprovadas</strong> (0 race conditions)</p>
+            </div>
+            <div class="card" style="padding: 12px;">
+                <div class="card-header" style="font-size: 0.95rem; margin-bottom: 6px;">🎯 Sensibilidade (Seed=42)</div>
+                <p>• +0,5G (4,9 m/s²): <i>γ</i> = 4,80 (&gt; 3,84)</p>
+                <p>• +1,0G (9,8 m/s²): <i>γ</i> = 19,21</p>
+                <p>• +2,0G (19,6 m/s²): <i>γ</i> = 76,83</p>
+        </div>
 
         <div class="callout callout-success" style="margin-top: 24px;">
             <div>🎉</div>
@@ -696,8 +726,8 @@ V_r = A \cdot V \cdot A^T = \sigma^2_{az} + k^2 \cdot \sigma^2_v
             <div class="card">
                 <div class="card-header">🧠 Inteligência e Escalonabilidade</div>
                 <ul>
-                    <li><strong>Capacidade 6 (Instrumentação):</strong> Medição de tempo de ciclo ($C_i$) para provar folga temporal perante o deadline de 40ms.</li>
-                    <li><strong>Capacidade 7 (Aprendizado Online):</strong> Algoritmo estatístico incremental (Welford / K-Means online) com memória $O(1)$ aprendendo a assinatura do asfalto bom.</li>
+                    <li><strong>Capacidade 6 (Instrumentação):</strong> Medição de tempo de ciclo (<i>C<sub>i</sub></i>) para provar folga temporal perante o deadline de 40ms.</li>
+                    <li><strong>Capacidade 7 (Aprendizado Online):</strong> Algoritmo estatístico incremental (Welford / K-Means online) com memória <em>O</em>(1) aprendendo a assinatura do asfalto bom.</li>
                     <li><strong>Capacidade 8 (Agente com Abstenção):</strong> Degradação graciosa: se o agente de aprendizado falhar ou tiver baixa confiança, o sistema comuta instantaneamente para o <code>Reconciler</code> por regras.</li>
                 </ul>
             </div>
