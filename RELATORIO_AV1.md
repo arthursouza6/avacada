@@ -42,11 +42,44 @@ O desenvolvimento seguiu rigorosamente os princípios de **Clean Architecture** 
 ### 2.3. Camada de Apresentação e Serviço (`com.example.pavementquality.service` e `ui`)
 * **`AcquisitionService.kt`:** Implementa o serviço em primeiro plano (*Foreground Service*) do Android associado a `PowerManager.PARTIAL_WAKE_LOCK`. Garante sobrevivência ininterrupta da coleta periódica mesmo com a tela do tablet bloqueada, contornando o *Doze Mode* e o *OOM Killer*.
 * **`MainActivity.kt`:** Ponto de entrada da aplicação. Gerencia requisição em tempo de execução das permissões críticas (`ACCESS_FINE_LOCATION`, `POST_NOTIFICATIONS`, `FOREGROUND_SERVICE_LOCATION`) e renderiza o painel reativo em Jetpack Compose com cartões de telemetria, satélites ao vivo, alerta de qualidade da via e histórico de gravações.
-
 ### 2.4. Suíte de Testes Automatizados (`app/src/test/...`)
 * **`ModelsTest.kt`:** Valida contratos estritos e rejeição de dados espúrios.
 * **`ReconcilerTest.kt`:** Comprova analiticamente que em asfalto normal a restrição física é satisfeita ($\hat{a}_z - k\hat{v} = 0$), que perturbações anômalas elevam $\gamma > 3{,}84$ acusando erro grosseiro, e que ruído com carro parado é isolado.
 * **`TrackRecordConcurrencyTest.kt`:** Ensaio rigoroso de estresse concorrente executado em **10 repetições automáticas consecutivas**, submetendo o buffer a 10 threads de escrita e 2 threads de leitura simultâneas (10.000 inserções por rodada), atestando ausência de *race conditions*.
+
+### 2.5. Diagrama de Pipeline de Processamento Reativo
+A arquitetura de fluxo de dados multithread é estruturada de forma unidirecional e reativa:
+
+```mermaid
+graph TD
+    subgraph Hardware ["Sensores Físicos de Hardware"]
+        S1["📱 Acelerômetro Linear MEMS<br/>(20 Hz / 50 ms - az)"]
+        S2["🛰️ Receptor GNSS Multi-Constelação<br/>(1 Hz - Doppler v)"]
+    end
+
+    subgraph DataLayer ["Camada de Dados & Ingestão"]
+        HSM["⚙️ HardwareSensorManager.kt<br/>• Filtro Deadband (v &lt; 0.5 km/h)<br/>• GnssStatus Callback (Visada/SNR)<br/>• Normalização para Unidades SI"]
+    end
+
+    subgraph ReactiveBus ["Barramento Reativo StateFlow"]
+        BUS["⚡ StateFlow&lt;VibrationSample&gt; &amp; StateFlow&lt;KinematicFix&gt;<br/>(Contratos Imutáveis e Blindagem Fail-Fast)"]
+    end
+
+    subgraph Consumers ["Camadas de Domínio, Persistência e UI"]
+        TR["🔄 TrackRecord (Capacidade 3)<br/>Buffer Circular Concorrente N=500<br/>@Synchronized + Cópias Defensivas O(1)"]
+        REC["⚖️ Reconciler (Capacidade 2)<br/>MQP az - 0.5v = 0<br/>Teste Qui-Quadrado &gamma; &gt; 3.84 (Buracos)"]
+        LOG["💾 LogRecorder (Capacidade 4)<br/>Persistência Contínua CSV<br/>MediaStore Downloads / Segundo Plano"]
+        UI["🖥️ DashboardScreen (Compose)<br/>Interface Reativa 60 FPS<br/>Telemetria e Alerta ao Vivo"]
+    end
+
+    S1 -->|SensorEventListener| HSM
+    S2 -->|LocationListener| HSM
+    HSM -->|Emissão Assíncrona| BUS
+    BUS -->|Assinatura| TR
+    BUS -->|Assinatura| REC
+    BUS -->|Assinatura| LOG
+    BUS -->|Assinatura| UI
+```
 
 ---
 

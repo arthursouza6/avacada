@@ -237,6 +237,72 @@
             text-align: center;
         }
 
+        /* Pipeline Visual no Relatório */
+        .report-pipeline {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin: 12px 0 16px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            page-break-inside: avoid;
+        }
+
+        .report-pipe-title {
+            font-size: 9pt;
+            font-weight: 700;
+            color: #1e3a8a;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 2px;
+        }
+
+        .report-pipe-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .report-pipe-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 6px 10px;
+            font-size: 8.5pt;
+            text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        .report-pipe-arrow {
+            font-size: 7.5pt;
+            color: #475569;
+            font-weight: 600;
+            margin: 1px 0;
+            text-align: center;
+        }
+
+        .report-pipe-grid4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+
+        .report-pipe-branch {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 6px 8px;
+            font-size: 8pt;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            text-align: center;
+        }
+
         .page-break {
             page-break-before: always;
         }
@@ -296,6 +362,52 @@
         <li><strong><code>AcquisitionService.kt</code>:</strong> Implementa o <em>Foreground Service</em> do Android com <code>PowerManager.PARTIAL_WAKE_LOCK</code>, assegurando amostragem contínua por mais de 30 minutos com a tela desligada.</li>
         <li><strong><code>MainActivity.kt</code>:</strong> Interface reativa construída em Jetpack Compose com cartões de telemetria, satélites, diagnóstico de qualidade da via e histórico de gravações.</li>
     </ul>
+
+    <!-- DIAGRAMA VISUAL DO PIPELINE DE PROCESSAMENTO -->
+    <div class="report-pipeline">
+        <div class="report-pipe-title">Diagrama do Pipeline Ciberfísico e Fluxo Reativo Multithread</div>
+        <div class="report-pipe-row">
+            <div class="report-pipe-box" style="border-left: 3px solid #0284c7;">
+                <strong>📱 Acelerômetro Linear MEMS</strong><br>
+                <span>Amostragem: 20 Hz (50 ms) • <i>a<sub>z</sub></i> (m/s²)</span>
+            </div>
+            <div style="font-weight: bold; color: #64748b; font-size: 11pt;">+</div>
+            <div class="report-pipe-box" style="border-left: 3px solid #0891b2;">
+                <strong>🛰️ Receptor GNSS (GPS/Galileo)</strong><br>
+                <span>Amostragem: 1 Hz (1000 ms) • Doppler <i>v</i> (m/s)</span>
+            </div>
+        </div>
+
+        <div class="report-pipe-arrow">⬇️ <em>Callbacks Nativos de Hardware do Android OS</em></div>
+
+        <div class="report-pipe-box" style="width: 96%; border-left: 3px solid #4f46e5; background: #ffffff;">
+            <strong>⚙️ HardwareSensorManager.kt (Camada de Dados &amp; Ingestão)</strong><br>
+            <span style="font-size: 8pt; color: #4b5563;">
+                Filtro Deadband (<i>v</i> &lt; 0,5 km/h) • Monitoramento GnssStatus (Satélites &amp; SNR) • Normalização em Unidades SI
+            </span>
+        </div>
+
+        <div class="report-pipe-arrow">⚡ <em>Barramento Reativo: StateFlow&lt;VibrationSample&gt; &amp; StateFlow&lt;KinematicFix&gt; (Contratos Imutáveis)</em></div>
+
+        <div class="report-pipe-grid4">
+            <div class="report-pipe-branch" style="border-top: 3px solid #9333ea;">
+                <strong style="color: #6b21a8;">🔄 TrackRecord (Cap. 3)</strong><br>
+                <span style="font-size: 7.5pt; color: #4b5563;">Buffer Circular (<i>N</i> = 500)<br><code>@Synchronized</code> • Cópias Defensivas</span>
+            </div>
+            <div class="report-pipe-branch" style="border-top: 3px solid #d97706;">
+                <strong style="color: #b45309;">⚖️ Reconciler (Cap. 2)</strong><br>
+                <span style="font-size: 7.5pt; color: #4b5563;">MQP (<i>a<sub>z</sub> - 0,5v = 0</i>)<br>Teste <i>&chi;</i>² &gt; 3,84 (Buracos)</span>
+            </div>
+            <div class="report-pipe-branch" style="border-top: 3px solid #16a34a;">
+                <strong style="color: #15803d;">💾 LogRecorder (Cap. 4)</strong><br>
+                <span style="font-size: 7.5pt; color: #4b5563;">Persistência CSV Contínua<br>Thread I/O • Pasta Downloads</span>
+            </div>
+            <div class="report-pipe-branch" style="border-top: 3px solid #0284c7;">
+                <strong style="color: #0369a1;">🖥️ Dashboard UI</strong><br>
+                <span style="font-size: 7.5pt; color: #4b5563;">Jetpack Compose 60 FPS<br>Telemetria e Alertas ao Vivo</span>
+            </div>
+        </div>
+    </div>
 
     <!-- SEÇÃO 3: FUNDAMENTAÇÃO TEÓRICA -->
     <h2 class="section-title">§ 3. Fundamentação Teórica</h2>

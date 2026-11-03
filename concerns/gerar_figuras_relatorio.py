@@ -90,24 +90,27 @@ plt.close()
 print(f"Salvo: {fig1_path}")
 
 
-print("Gerando Figura 2: Análise Multivariável (Aceleração Z vs Velocidade GPS)...")
-# Usar o ensaio longo com GPS válido (Ensaio 03)
-df_gps = load_log(summary_df.loc[2, "Path"])
+print("Gerando Figura 2: Análise Multivariável Sincronizada (Aceleração Z vs Velocidade GPS)...")
+# Usar o ensaio crítico com anomalia real (Ensaio 02 - Amostragem Completa)
+df_gps = load_log(summary_df.loc[1, "Path"])
+t_max_e2 = df_gps["elapsed_sec"].max()
 fig, (ax_acc, ax_spd) = plt.subplots(2, 1, figsize=(14, 6), sharex=True)
 
 # Aceleração Z
-ax_acc.plot(df_gps["elapsed_sec"], df_gps["z_accel"], color="#0055aa", linewidth=0.5, alpha=0.8)
+ax_acc.plot(df_gps["elapsed_sec"], df_gps["z_accel"], color="#0055aa", linewidth=0.6, alpha=0.85)
 ax_acc.axhline(0, color="#666666", linestyle="--", linewidth=0.7, alpha=0.5)
-ax_acc.set_title("Ensaio Experimental em Segundo Plano (58.673 amostras) — Resposta Vertical da Suspensão ($a_z$)", 
+ax_acc.set_title(f"Resposta Vertical da Suspensão ($a_z$) — Amostragem Completa ({len(df_gps):,} amostras | {t_max_e2:.1f}s)", 
                  fontsize=11, fontweight="bold")
 ax_acc.set_ylabel("Aceleração Z (m/s²)", fontsize=9)
+ax_acc.set_xlim(0, t_max_e2)
 ax_acc.grid(True, linestyle=":", alpha=0.5)
 
 # Velocidade
 ax_spd.plot(df_gps["elapsed_sec"], df_gps["speed_kmh"], color="#008837", linewidth=1.1)
-ax_spd.set_title("Velocidade Cinemática do Veículo Medida pelo Receptor GNSS (km/h)", fontsize=11, fontweight="bold")
+ax_spd.set_title(f"Velocidade Cinemática do Veículo Medida pelo Receptor GNSS (Média: {df_gps['speed_kmh'].mean():.1f} km/h | Máx: {df_gps['speed_kmh'].max():.1f} km/h)", fontsize=11, fontweight="bold")
 ax_spd.set_xlabel("Tempo Decorrido (segundos)", fontsize=9)
 ax_spd.set_ylabel("Velocidade (km/h)", fontsize=9)
+ax_spd.set_xlim(0, t_max_e2)
 ax_spd.grid(True, linestyle=":", alpha=0.5)
 
 plt.tight_layout()
@@ -158,46 +161,47 @@ plt.close()
 print(f"Salvo: {fig3_path}")
 
 
-print("Gerando Figura 4: Zoom na Detecção da Anomalia Crítica (Buraco +29,76 m/s²)...")
-# Carregar Ensaio 02
+print("Gerando Figura 4: Detecção de Anomalia Crítica em Amostragem Completa...")
+# Carregar Ensaio 02 (Amostragem Completa)
 df_critico = load_log(summary_df.loc[1, "Path"])
-# Localizar pico máximo
+t_max_critico = df_critico["elapsed_sec"].max()
 idx_max = df_critico["z_accel"].idxmax()
 t_peak = df_critico.loc[idx_max, "elapsed_sec"]
-
-# Janela de 10 segundos ao redor do pico
-window_df = df_critico[(df_critico["elapsed_sec"] >= t_peak - 5) & (df_critico["elapsed_sec"] <= t_peak + 5)].copy()
+z_peak = df_critico.loc[idx_max, "z_accel"]
 
 fig, (ax_zoom, ax_res) = plt.subplots(2, 1, figsize=(14, 6), sharex=True)
 
-# 1. Sinal do acelerômetro
-ax_zoom.plot(window_df["elapsed_sec"], window_df["z_accel"], color="#0055aa", linewidth=1.2, label="Aceleração $a_z$")
-ax_zoom.axhline(0, color="#666666", linestyle="--", linewidth=0.8, alpha=0.6)
-ax_zoom.scatter([t_peak], [df_critico.loc[idx_max, "z_accel"]], color="#cc0000", s=80, zorder=5, 
-                label=f"Pico Crítico ({df_critico.loc[idx_max, 'z_accel']:.2f} m/s²)")
-ax_zoom.set_title("Detecção de Erro Grosseiro em Buraco Real — Janela de 10s no Ensaio Crítico", 
+# 1. Sinal do acelerômetro completo
+ax_zoom.plot(df_critico["elapsed_sec"], df_critico["z_accel"], color="#0055aa", linewidth=0.6, alpha=0.85, label=r"Aceleração $a_z$")
+ax_zoom.axhline(0, color="#666666", linestyle="--", linewidth=0.7, alpha=0.6)
+ax_zoom.scatter([t_peak], [z_peak], color="#cc0000", s=45, zorder=5, 
+                label=f"Pico Crítico ({z_peak:.2f} m/s² @ t={t_peak:.1f}s)")
+ax_zoom.set_title(f"Detecção de Erro Grosseiro em Buraco Real — Amostragem Completa ({len(df_critico):,} amostras | {t_max_critico:.1f}s)", 
                   fontsize=11, fontweight="bold")
 ax_zoom.set_ylabel("Aceleração Z (m/s²)", fontsize=9)
-ax_zoom.grid(True, linestyle=":", alpha=0.6)
-ax_zoom.legend(loc="upper right", fontsize=9)
+ax_zoom.set_xlim(0, t_max_critico)
+ax_zoom.grid(True, linestyle=":", alpha=0.5)
+ax_zoom.legend(loc="upper right", fontsize=8)
 
-# 2. Resíduo Normalizado Qui-Quadrado
-# Modelo: r = az - 0.5 * v, V_r = 0.50, gamma = r^2 / V_r
-# Velocidade em m/s
-v_ms = window_df["speed_kmh"] / 3.6
-v_ms = v_ms.fillna(20.0 / 3.6) # fallback razoável se não houver fix
-r = window_df["z_accel"] - 0.5 * v_ms
-gamma = (r ** 2) / 0.50
+# 2. Resíduo Normalizado Qui-Quadrado completo
+v_ms = (df_critico["speed_kmh"] / 3.6).ffill().bfill().fillna(0.0)
+r = df_critico["z_accel"] - 0.5 * v_ms
+acc_map = {3: 0.25, 2: 1.0, 1: 4.0}
+var_az = df_critico["accuracy"].map(acc_map).fillna(1.0)
+var_v = (df_critico["speed_acc"].fillna(0.5) ** 2).clip(lower=0.01) if "speed_acc" in df_critico.columns else 0.25
+var_r = var_az + 0.25 * var_v
+gamma = (r ** 2) / var_r
 
-ax_res.plot(window_df["elapsed_sec"], gamma, color="#e6550d", linewidth=1.2, label="Resíduo Normalizado $\\gamma = r^2 / V_r$")
-ax_res.axhline(3.84, color="#cc0000", linestyle="--", linewidth=1.5, label="Limiar Crítico $\\chi^2_{0.95}(1) = 3{,}84$")
+ax_res.plot(df_critico["elapsed_sec"], gamma, color="#e6550d", linewidth=0.7, label=r"Resíduo Normalizado $\gamma = r^2 / V_r$")
+ax_res.axhline(3.84, color="#cc0000", linestyle="--", linewidth=1.5, label=r"Limiar Crítico $\chi^2_{0.95}(1) = 3{,}84$")
 ax_res.set_title("Estatística de Teste Qui-Quadrado (Disparo do Alerta de Anomalia / Erro Grosseiro)", 
                  fontsize=11, fontweight="bold")
 ax_res.set_xlabel("Tempo Decorrido (segundos)", fontsize=9)
-ax_res.set_ylabel("Estatística $\\gamma$", fontsize=9)
+ax_res.set_ylabel(r"Estatística $\gamma$", fontsize=9)
 ax_res.set_yscale("log")
-ax_res.grid(True, linestyle=":", alpha=0.6)
-ax_res.legend(loc="upper right", fontsize=9)
+ax_res.set_xlim(0, t_max_critico)
+ax_res.grid(True, linestyle=":", alpha=0.5)
+ax_res.legend(loc="upper right", fontsize=8)
 
 plt.tight_layout()
 fig4_path = output_dir / "figura4_zoom_deteccao_anomalia.png"
